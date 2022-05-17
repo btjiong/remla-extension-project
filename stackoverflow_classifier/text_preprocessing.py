@@ -5,13 +5,9 @@ For this project we will need to use a list of stop words. It can be downloaded 
 """
 
 import nltk
-nltk.download('stopwords')
 from nltk.corpus import stopwords
-
 from ast import literal_eval
 import pandas as pd
-import numpy as np
-
 import re
 
 REPLACE_BY_SPACE_RE = re.compile('[/(){}\[\]\|@,;]')
@@ -61,6 +57,7 @@ def count_tags(corpus):
 
 
 def get_data():
+    nltk.download('stopwords')
     # You are provided a split to 3 sets: *train*, *validation* and *test*.
     # All corpora (except for *test*) contain titles of the posts and corresponding tags (100 tags are available).
     train = read_data('../data/train.tsv')
@@ -87,6 +84,7 @@ def get_data():
 
 
 if __name__ == '__main__':
+    nltk.download('stopwords')
     # You are provided a split to 3 sets: *train*, *validation* and *test*.
     # All corpora (except for *test*) contain titles of the posts and corresponding tags (100 tags are available).
     train = read_data('../data/train.tsv')
@@ -102,7 +100,7 @@ if __name__ == '__main__':
 
     # Run your implementation for questions from file *text_prepare_tests.tsv*.
     prepared_questions = []
-    for line in open('data/text_prepare_tests.tsv', encoding='utf-8'):
+    for line in open('../data/text_prepare_tests.tsv', encoding='utf-8'):
         line = text_prepare(line.strip())
         prepared_questions.append(line)
     text_prepare_results = '\n'.join(prepared_questions)

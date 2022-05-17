@@ -53,7 +53,6 @@ def bag_of_words(x_train, x_val, x_test, words_counts):
     return X_train_mybag, X_val_mybag, X_test_mybag
 
 
-
 if __name__ == '__main__':
     x_train, y_train, x_val, y_val, x_test, tags_counts, words_counts = get_data()
 

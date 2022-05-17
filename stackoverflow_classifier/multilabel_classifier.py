@@ -7,7 +7,7 @@ There are many ways to transform text data to numeric vectors. In this task you 
 
 from sklearn.preprocessing import MultiLabelBinarizer
 from sklearn.multiclass import OneVsRestClassifier
-from sklearn.linear_model import LogisticRegression, RidgeClassifier
+from sklearn.linear_model import LogisticRegression
 from text_preprocessing import get_data
 from text_to_vector import bag_of_words, tfidf_features
 

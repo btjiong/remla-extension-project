@@ -12,9 +12,7 @@ Make sure you are familiar with all of them. How would you expect the things wor
 
 from sklearn.metrics import accuracy_score
 from sklearn.metrics import f1_score
-from sklearn.metrics import roc_auc_score
 from sklearn.metrics import average_precision_score
-from sklearn.metrics import recall_score
 from text_preprocessing import get_data
 from text_to_vector import bag_of_words, tfidf_features
 from multilabel_classifier import train_classifier, transform_binary
