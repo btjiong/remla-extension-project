@@ -1,4 +1,4 @@
-from stackoverflow_classifier.text_preprocessing import text_prepare
+from so_classifier.text_preprocessing import text_prepare
 
 
 def test_text_prepare():

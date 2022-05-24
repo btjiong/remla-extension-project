@@ -1,11 +1,8 @@
 """
 Flask API of the StackOverflow tag prediction model.
 """
-import traceback
-import joblib
 from flask import Flask, jsonify, request
 from flasgger import Swagger
-import pandas as pd
 
 import evaluation
 

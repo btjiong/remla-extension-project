@@ -1,4 +1,4 @@
-from stackoverflow_classifier.text_to_vector import my_bag_of_words
+from so_classifier.text_to_vector import my_bag_of_words
 
 
 def test_my_bag_of_words():

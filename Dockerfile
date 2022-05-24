@@ -1,4 +1,4 @@
-FROM python:3.7.10-slim
+FROM python:3.10-slim
 
 RUN apt-get update \
 && apt-get install -y --no-install-recommends git \
@@ -11,10 +11,16 @@ ENV VIRTUAL_ENV=/root/venv
 RUN python -m venv $VIRTUAL_ENV
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
-RUN pip3 install jupyter
+COPY requirements.txt .
+RUN python -m pip install --upgrade pip  &&\
+    pip install -r requirements.txt
 
-COPY stack.ipynb .
-ADD data ./data
+COPY so_classifier so_classifier
 
-RUN jupyter nbconvert --to script stack.ipynb
-#RUN ipython stack.py
+COPY data data
+
+EXPOSE 8080
+
+ENTRYPOINT [ "python3" ]
+
+CMD [ "so_classifier/serve.py" ]
