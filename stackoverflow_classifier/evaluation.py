@@ -20,9 +20,34 @@ from sklearn.metrics import roc_auc_score as roc_auc
 
 
 def print_evaluation_scores(y_val, predicted):
-    print('Accuracy score: ', accuracy_score(y_val, predicted))
-    print('F1 score: ', f1_score(y_val, predicted, average='weighted'))
-    print('Average precision score: ', average_precision_score(y_val, predicted, average='macro'))
+    accuracy = accuracy_score(y_val, predicted)
+    f1 = f1_score(y_val, predicted, average='weighted')
+    avp = average_precision_score(y_val, predicted, average='macro')
+    return accuracy, f1, avp
+
+
+def evaluate():
+    x_train, y_train, x_val, y_val, x_test, tags_counts, words_counts = get_data()
+
+    # X_train_mybag, X_val_mybag, X_test_mybag = bag_of_words(x_train, x_val, x_test, words_counts)
+
+    X_train_tfidf, X_val_tfidf, X_test_tfidf, tfidf_vocab = tfidf_features(x_train, x_val, x_test)
+
+    # Transform labels in a binary form, the prediction will be a mask of 0s and 1s.
+    mlb, y_train, y_val = transform_binary(y_train, y_val, tags_counts)
+
+    # Train the classifiers for different data transformations: *bag-of-words* and *tf-idf*.
+    # classifier_mybag = train_classifier(X_train_mybag, y_train)
+    classifier_tfidf = train_classifier(X_train_tfidf, y_train)
+
+    # Now you can create predictions for the data. You will need two types of predictions: labels and scores.
+    # y_val_predicted_labels_mybag = classifier_mybag.predict(X_val_mybag)
+
+    y_val_predicted_labels_tfidf = classifier_tfidf.predict(X_val_tfidf)
+
+    #  Print: *accuracy*, *F1-score macro/micro/weighted*, *Precision macro/micro/weighted*
+    # return print_evaluation_scores(y_val, y_val_predicted_labels_mybag)
+    return print_evaluation_scores(y_val, y_val_predicted_labels_tfidf)
 
 
 if __name__ == '__main__':
@@ -49,9 +74,9 @@ if __name__ == '__main__':
 
     #  Print: *accuracy*, *F1-score macro/micro/weighted*, *Precision macro/micro/weighted*
     print('Bag-of-words')
-    print_evaluation_scores(y_val, y_val_predicted_labels_mybag)
+    print(print_evaluation_scores(y_val, y_val_predicted_labels_mybag))
     print('Tfidf')
-    print_evaluation_scores(y_val, y_val_predicted_labels_tfidf)
+    print(print_evaluation_scores(y_val, y_val_predicted_labels_tfidf))
 
     # Plot some generalization of the ROC curve for the case of multi-label classification
     roc_auc(y_val, y_val_predicted_scores_mybag, multi_class='ovo')
