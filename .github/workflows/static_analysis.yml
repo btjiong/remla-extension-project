@@ -18,7 +18,7 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: Run MLLINT
-        run: docker run -it --rm -v ${{ github.workspace }}:/app bvobart/mllint:latest
+        run: docker run -T --rm -v ${{ github.workspace }}:/app bvobart/mllint:latest
 
 
 
