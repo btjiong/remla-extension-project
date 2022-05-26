@@ -79,9 +79,9 @@ def get_data():
     """
     # You are provided a split to 3 sets: *train*, *validation* and *test*.
     # All corpora (except for *test*) contain titles of the posts and corresponding tags (100 tags are available).
-    train = read_data('../data/train.tsv')
-    validation = read_data('../data/validation.tsv')
-    test = pd.read_csv('../data/test.tsv', sep='\t')
+    train = read_data('data/train.tsv')
+    validation = read_data('data/validation.tsv')
+    test = pd.read_csv('data/test.tsv', sep='\t')
 
     # train.head()
 

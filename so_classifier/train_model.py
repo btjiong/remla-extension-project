@@ -14,7 +14,7 @@ def train_tfidf(x_train, y_train, x_val, y_val, x_test):
     # TF-IDF features
     print("Generating TF-IDF features...")
     X_train_tfidf, X_val_tfidf, X_test_tfidf, tfidf_vectorizer = tfidf_features(x_train, x_val, x_test)
-    dump(tfidf_vectorizer, '../output/tfidf_vectorizer.joblib')
+    dump(tfidf_vectorizer, 'output/tfidf_vectorizer.joblib')
 
     print("Training the TF-IDF classifier...")
     classifier_tfidf = train_classifier(X_train_tfidf, y_train)
@@ -28,7 +28,7 @@ def train_tfidf(x_train, y_train, x_val, y_val, x_test):
     print("Average precision: ", avp)
 
     print("Saving the TF-IDF model...")
-    dump(classifier_tfidf, '../output/tfidf_model.joblib')
+    dump(classifier_tfidf, 'output/tfidf_model.joblib')
     print("============================================")
 
 
@@ -47,7 +47,7 @@ def train_bow(x_train, y_train, x_val, x_test, words_counts):
 
     # Save the classifiers
     print("Saving the BoW model...")
-    dump(classifier_mybag, '../output/bow_model.joblib')
+    dump(classifier_mybag, 'output/bow_model.joblib')
     print("============================================")
 
 
@@ -58,7 +58,7 @@ if __name__ == "__main__":
 
     # Transform labels to binary
     mlb, y_train, y_val = transform_binary(y_train, y_val, tags_counts)
-    dump(mlb, '../output/mlb.joblib')
+    dump(mlb, 'output/mlb.joblib')
 
     # Train and save the TF-IDF model
     train_tfidf(x_train, y_train, x_val, y_val, x_test)

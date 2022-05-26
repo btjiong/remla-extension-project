@@ -11,16 +11,19 @@ ENV VIRTUAL_ENV=/root/venv
 RUN python -m venv $VIRTUAL_ENV
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
-COPY requirements.txt .
-RUN python -m pip install --upgrade pip  &&\
-    pip install -r requirements.txt
 
 COPY so_classifier so_classifier
-
 COPY data data
+COPY requirements.txt .
 
-EXPOSE 8080
+RUN mkdir output   && \
+    python -m pip install --upgrade pip  && \
+    pip install -r requirements.txt && \
+    python so_classifier/train_model.py
 
-ENTRYPOINT [ "python3" ]
+
+EXPOSE 5000
+
+ENTRYPOINT [ "python" ]
 
 CMD [ "so_classifier/serve.py" ]

@@ -10,9 +10,9 @@ from text_preprocessing import text_prepare
 app = Flask(__name__)
 swagger = Swagger(app)
 
-tfidf_model = joblib.load('../output/tfidf_model.joblib')
-tfidf_vectorizer = joblib.load('../output/tfidf_vectorizer.joblib')
-mlb = joblib.load('../output/mlb.joblib')
+tfidf_model = joblib.load('output/tfidf_model.joblib')
+tfidf_vectorizer = joblib.load('output/tfidf_vectorizer.joblib')
+mlb = joblib.load('output/mlb.joblib')
 
 
 @app.route('/predict', methods=['POST'])
@@ -52,4 +52,4 @@ def predict():
 
 
 if __name__ == '__main__':
-    app.run(port=8080)
+    app.run(host='0.0.0.0')
