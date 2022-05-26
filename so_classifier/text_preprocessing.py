@@ -10,6 +10,7 @@ from ast import literal_eval
 import pandas as pd
 import re
 
+nltk.download('stopwords')
 REPLACE_BY_SPACE_RE = re.compile('[/(){}\[\]\|@,;]')
 BAD_SYMBOLS_RE = re.compile('[^0-9a-z #+_]')
 STOPWORDS = set(stopwords.words('english'))
@@ -57,7 +58,6 @@ def count_tags(corpus):
 
 
 def get_data():
-    nltk.download('stopwords')
     # You are provided a split to 3 sets: *train*, *validation* and *test*.
     # All corpora (except for *test*) contain titles of the posts and corresponding tags (100 tags are available).
     train = read_data('../data/train.tsv')
@@ -84,7 +84,6 @@ def get_data():
 
 
 if __name__ == '__main__':
-    nltk.download('stopwords')
     # You are provided a split to 3 sets: *train*, *validation* and *test*.
     # All corpora (except for *test*) contain titles of the posts and corresponding tags (100 tags are available).
     train = read_data('../data/train.tsv')

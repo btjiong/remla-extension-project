@@ -85,9 +85,4 @@ if __name__ == '__main__':
     # as they are obviously important tokens in our tags prediction task:
     tfidf_vocab["c#"]
 
-    X_train_tfidf, X_val_tfidf, X_test_tfidf, tfidf_vocab = tfidf_features(x_train, x_val, x_test)
-    tfidf_reversed_vocab = {i: word for word, i in tfidf_vocab.items()}
-
-    tfidf_vocab["c#"]
-
     tfidf_reversed_vocab[1879]
