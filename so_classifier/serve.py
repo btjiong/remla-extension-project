@@ -1,13 +1,18 @@
 """
 Flask API of the StackOverflow tag prediction model.
 """
+import joblib
 from flask import Flask, jsonify, request
 from flasgger import Swagger
 
-import evaluation
+from text_preprocessing import text_prepare
 
 app = Flask(__name__)
 swagger = Swagger(app)
+
+tfidf_model = joblib.load('../output/tfidf_model.joblib')
+tfidf_vectorizer = joblib.load('../output/tfidf_vectorizer.joblib')
+mlb = joblib.load('../output/mlb.joblib')
 
 
 @app.route('/predict', methods=['POST'])
@@ -28,52 +33,23 @@ def predict():
             properties:
                 title:
                     type: string
-                    example: This is an example of an StackOverflow title.
+                    example: Ajax data - Uncaught ReferenceError date is not defined.
     responses:
       200:
-        description: "The result of the classification: tag."
+        description: "The result of the classification: tag(s)."
     """
     input_data = request.get_json()
     title = input_data.get('title')
-    # prediction = classifier_tfidf.predict(title)
-    # processed_title = prepare(title)
-    # model = joblib.load('output/model.joblib')
-    # prediction = model.predict(processed_title)[0]
-    #
-    # return jsonify({
-    #     "result": prediction,
-    #     "title": title
-    # })
+    prepared_title = text_prepare(title)
+    vectorized_title = tfidf_vectorizer.transform([prepared_title])
+    prediction = tfidf_model.predict(vectorized_title)
+    prediction = mlb.inverse_transform(prediction)
+
     return jsonify({
         "title": title,
-        "test": "OK"
-    })
-
-@app.route('/evaluate', methods=['GET'])
-def evaluate():
-    """
-    Evaluate the model
-    ---
-    consumes:
-      - application/json
-    responses:
-      200:
-        description: "The evaluation of the BoW and TF-IDF classification."
-    """
-
-    tfidfAcc, tfidfF1, tfidfAvp = evaluation.evaluate()
-
-    return jsonify({
-        # "BoW Accuracy": bowAcc,
-        # "BoW F1-Score": bowF1,
-        # "BoW Average Precision": bowAvp,
-        "TF-IDF Accuracy": tfidfAcc,
-        "TF-IDF F1-Score": tfidfF1,
-        "TF-IDF Average Precision": tfidfAvp
+        "result": prediction
     })
 
 
 if __name__ == '__main__':
-    # clf = joblib.load('output/model.joblib')
-
-    app.run(port=8080, debug=True)
+    app.run(port=8080)
