@@ -19,7 +19,7 @@ COPY requirements.txt .
 RUN mkdir output   && \
     python -m pip install --upgrade pip  && \
     pip install -r requirements.txt && \
-    python so_classifier/train_model.py
+    python -u so_classifier/train_model.py
 
 
 EXPOSE 5000
