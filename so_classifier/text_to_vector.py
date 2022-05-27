@@ -1,8 +1,14 @@
+"""
+    Transforming text to a vector
+
+    Functions for fitting the BoW and TF-IDF vectorizers, and using these fitted vectorizers for transforming
+    StackOverflow titles into vectors/features.
+
+"""
 import joblib
 import numpy as np
 from scipy import sparse as sp_sparse
 from sklearn.feature_extraction.text import TfidfVectorizer
-from text_preprocessing import get_data
 
 
 def my_bag_of_words(text, words_to_index, dict_size):
@@ -59,7 +65,7 @@ def bag_of_words(x_train, x_val, x_test, words_counts):
 
 def bow_transform(dataset, words_counts):
     """
-        Get BoW vectors for a given dataset
+        Transform a set of StackOverflow titles into BoW vectors
 
         dataset: samples
         words_counts: words counts
@@ -76,13 +82,14 @@ def bow_transform(dataset, words_counts):
 
 def tfidf_features(x_train, x_val, x_test):
     """
+        Create TF-IDF vectorizer with a proper parameters choice
+        Fit the vectorizer on the train set
+        Transform the train, test, and val sets and return the result
+
         x_train, x_val, x_test: samples
 
         return: TF-IDF vectorized representation of each sample and vocabulary
     """
-    # Create TF-IDF vectorizer with a proper parameters choice
-    # Fit the vectorizer on the train set
-    # Transform the train, test, and val sets and return the result
 
     tfidf_vectorizer = TfidfVectorizer(min_df=5, max_df=0.9, ngram_range=(1, 2),
                                        token_pattern='(\S+)')  ####### YOUR CODE HERE #######
@@ -96,52 +103,14 @@ def tfidf_features(x_train, x_val, x_test):
 
 def tfidf_transform(dataset):
     """
+        Transform a set of StackOverflow titles into TF-IDF features
+
         dataset: samples
 
         return: TF-IDF vectorized representation of each sample and vocabulary
     """
-    # Create TF-IDF vectorizer with a proper parameters choice
-    # Fit the vectorizer on the train set
-    # Transform the train, test, and val sets and return the result
-
     tfidf_vectorizer = joblib.load('../output/tfidf_vectorizer.joblib')
 
     dataset_tfidf = tfidf_vectorizer.transform(dataset)
 
     return dataset_tfidf
-
-
-
-# if __name__ == '__main__':
-#     x_train, y_train, x_val, y_val, x_test, tags_counts, words_counts = get_data()
-#
-#     ### Bag of words ###
-#     DICT_SIZE = 5000
-#     INDEX_TO_WORDS = sorted(words_counts, key=words_counts.get, reverse=True)[:DICT_SIZE]####### YOUR CODE HERE #######
-#     WORDS_TO_INDEX = {word: i for i, word in enumerate(INDEX_TO_WORDS)}
-#     ALL_WORDS = WORDS_TO_INDEX.keys()
-#
-#     X_train_mybag = sp_sparse.vstack(
-#         [sp_sparse.csr_matrix(my_bag_of_words(text, WORDS_TO_INDEX, DICT_SIZE)) for text in x_train])
-#     X_val_mybag = sp_sparse.vstack(
-#         [sp_sparse.csr_matrix(my_bag_of_words(text, WORDS_TO_INDEX, DICT_SIZE)) for text in x_val])
-#     X_test_mybag = sp_sparse.vstack(
-#         [sp_sparse.csr_matrix(my_bag_of_words(text, WORDS_TO_INDEX, DICT_SIZE)) for text in x_test])
-#     print('X_train shape ', X_train_mybag.shape)
-#     print('X_val shape ', X_val_mybag.shape)
-#     print('X_test shape ', X_test_mybag.shape)
-#
-#     # **Task 3 (BagOfWords).**
-#     row = X_train_mybag[10].toarray()[0]
-#     non_zero_elements_count = (row > 0).sum()  ####### YOUR CODE HERE #######
-#
-#
-#     ### TF-IDF ###
-#     X_train_tfidf, X_val_tfidf, X_test_tfidf, tfidf_vocab = tfidf_features(x_train, x_val, x_test)
-#     tfidf_reversed_vocab = {i: word for word, i in tfidf_vocab.items()}
-#
-#     # In this case, check whether you have c++ or c# in your vocabulary,
-#     # as they are obviously important tokens in our tags prediction task:
-#     tfidf_vocab["c#"]
-#
-#     tfidf_reversed_vocab[1879]

@@ -1,7 +1,5 @@
 """
-### Analysis of the most important features
-
-Finally, it is usually a good idea to look at the features (words or n-grams) that are used with the largest weigths in your logistic regression model.
+    Analysis of the most important features
 """
 
 from text_preprocessing import get_data

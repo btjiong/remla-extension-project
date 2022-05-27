@@ -1,5 +1,15 @@
-from joblib import dump, load
+"""
+    Training the model
 
+    This script:
+        1) preprocesses the data
+        2) generates the TF-IDF and/or BoW vectors
+        3) trains the TF-IDF and/or BoW model
+        4) evaluates the model
+        5) saves the model
+"""
+
+from joblib import dump
 from multilabel_classifier import train_classifier, transform_binary
 from evaluation import get_evaluation_scores
 from text_to_vector import bag_of_words, tfidf_features

@@ -1,5 +1,9 @@
 """
-Flask API of the StackOverflow tag prediction model.
+    Flask API of the StackOverflow tag prediction model.
+
+    predict (POST):
+        in: "{"title": "title"}"
+        out: "{"title": "title", "result": "tags"}"
 """
 import joblib
 from flask import Flask, jsonify, request
