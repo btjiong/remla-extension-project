@@ -28,7 +28,12 @@ jobs:
       #Run mypy
       - name: Run Mypy
         run: mypy --strict $(git ls-files '*.py')
-        
+      
+      #Run Isort (Check import order)
+      - uses: jamescurtin/isort-action@master
+        with:
+            requirementsFiles: "requirements.txt requirements-test.txt"
+            
       # Runs a single command using the runners shell
       - name: Run MLLINT
         run: docker run --rm -v ${{ github.workspace }}:/app bvobart/mllint:latest
