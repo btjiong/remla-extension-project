@@ -20,7 +20,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v3.1.2
         with:
-          python-version: 3.x
+          python-version: 3.8
     
       - name: Dependencies
         run: pip install mypy
@@ -30,9 +30,8 @@ jobs:
         run: mypy --strict $(git ls-files '*.py')
       
       #Run Isort (Check import order)
-      - uses: jamescurtin/isort-action@master
-        with:
-            requirementsFiles: "requirements.txt requirements-test.txt"
+      - name: python-isort
+        uses: isort/isort-action@v0.1.0
             
       # Runs a single command using the runners shell
       - name: Run MLLINT
