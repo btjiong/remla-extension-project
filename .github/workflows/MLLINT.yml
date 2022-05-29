@@ -15,7 +15,20 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v3
-
+      
+      #Setup python
+      - name: Setup Python
+      - uses: actions/setup-python@v3.1.2
+        with:
+          python-version: 3.x
+    
+      - name: Install Dependencies
+        run: pip install mypy
+        
+      #Run mypy
+      - name: mypy
+        run: mypy --strict $(git ls-files '*.py')
+        
       # Runs a single command using the runners shell
       - name: Run MLLINT
         run: docker run --rm -v ${{ github.workspace }}:/app bvobart/mllint:latest
