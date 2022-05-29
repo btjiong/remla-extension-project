@@ -18,15 +18,15 @@ jobs:
       
       #Setup python
       - name: Setup Python
-      - uses: actions/setup-python@v3.1.2
+        uses: actions/setup-python@v3.1.2
         with:
           python-version: 3.x
     
-      - name: Install Dependencies
+      - name: Dependencies
         run: pip install mypy
         
       #Run mypy
-      - name: mypy
+      - name: Run Mypy
         run: mypy --strict $(git ls-files '*.py')
         
       # Runs a single command using the runners shell
