@@ -24,7 +24,10 @@ jobs:
           python-version: 3.8
     
       - name: Dependencies
-        run: pip install mypy
+        run: |
+          pip install mypy
+          pip install pylint
+
         
       #Run mypy
       - name: Run Mypy
