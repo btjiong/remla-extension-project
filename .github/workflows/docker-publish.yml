@@ -27,9 +27,9 @@ jobs:
               run: |
                   IMG=ghcr.io/${{ github.repository }} \
                   docker build \
-                    -t latest \
-                    -t ${{ env.version_major }}-latest \
-                    -t ${{ env.version_major }}.${{ env.version_minor}}-latest \
-                    -t ${{ env.version }} \
+                    -t "${IMG}:latest" \
+                    -t "${IMG}:${{ env.version_major }}-latest" \
+                    -t "${IMG}:${{ env.version_major }}.${{ env.version_minor}}-latest" \
+                    -t "${IMG}:${{ env.version }}" \
                     . \
                   docker push --all-tags $IMG
