@@ -50,6 +50,7 @@ jobs:
       
       #Publish the bandit output as an artifact
       - uses: actions/upload-artifact@v3
+        if: always()
         with:
           path: |
             output/security_report.txt
