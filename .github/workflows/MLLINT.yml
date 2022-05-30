@@ -43,7 +43,7 @@ jobs:
     
       #Run pylint
       - name: GitHub Action for pylint
-        run: pylint **/*.py
+        run: pylint $(git ls-files '*.py')
   
       # Runs a single command using the runners shell
       - name: Run MLLINT
