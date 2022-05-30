@@ -33,4 +33,4 @@ jobs:
                     -t ${{ env.img }}:${{ env.version_major }}.${{ env.version_minor}}-latest \
                     -t ${{ env.img }}:${{ env.version }} \
                     . \
-                  docker push --all-tags ${{ env.img }}:latest
+                  docker push ${{ env.img }}
