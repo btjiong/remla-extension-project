@@ -28,6 +28,9 @@ jobs:
           pip install mypy
           pip install pylint
 
+      #Run black
+      - name: Run Black
+        uses: psf/black@stable
         
       #Run mypy
       - name: Run Mypy
