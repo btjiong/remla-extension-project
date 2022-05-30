@@ -16,6 +16,8 @@ jobs:
                   MAJOR=`echo "$VERSION" | cut -d . -f 1`
                   MINOR=`echo "$VERSION" | cut -d . -f 2`
                   PATCH=`echo "$VERSION" | cut -d . -f 3`
+                  IMG=ghcr.io/${{ github.repository }}
+                  echo "img=$IMG" >> $GITHUB_ENV
                   echo "version=$VERSION" >> $GITHUB_ENV
                   echo "version_major=$MAJOR" >> $GITHUB_ENV
                   echo "version_minor=$MINOR" >> $GITHUB_ENV
@@ -25,11 +27,10 @@ jobs:
 
             - name: Build and push
               run: |
-                  IMG=ghcr.io/soclassifier \
                   docker build \
-                    -t ${IMG}:latest \
-                    -t ${IMG}:${{ env.version_major }}-latest \
-                    -t ${IMG}:${{ env.version_major }}.${{ env.version_minor}}-latest \
-                    -t ${IMG}:${{ env.version }} \
+                    -t ${{ env.img }}:latest \
+                    -t ${{ env.img }}:${{ env.version_major }}-latest \
+                    -t ${{ env.img }}:${{ env.version_major }}.${{ env.version_minor}}-latest \
+                    -t ${{ env.img }}:${{ env.version }} \
                     . \
-                  docker push --all-tags $IMG
+                  docker push --all-tags ${{ env.img }}
