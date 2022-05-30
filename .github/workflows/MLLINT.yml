@@ -40,7 +40,7 @@ jobs:
     
       #Run pylint
       - name: GitHub Action for pylint
-        run: pip install -r requirements.txt ; pylint **/*.py
+        run: pylint **/*.py
   
       # Runs a single command using the runners shell
       - name: Run MLLINT
