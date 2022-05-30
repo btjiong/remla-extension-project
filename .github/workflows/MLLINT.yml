@@ -47,10 +47,16 @@ jobs:
       #Run pylint
       - name: GitHub Action for pylint
         run: pylint $(git ls-files '*.py')
-  
+      
+      #Publish the bandit output as an artifact
+      - uses: actions/upload-artifact@v3
+        with:
+          path: |
+            output/security_report.txt
+        
       # Runs a single command using the runners shell
-      - name: Run MLLINT
-        run: docker run --rm -v ${{ github.workspace }}:/app bvobart/mllint:latest
+      # - name: Run MLLINT
+      # run: docker run --rm -v ${{ github.workspace }}:/app bvobart/mllint:latest
 
 
 
