@@ -1,3 +1,25 @@
+# Instructions
+1) Build the docker image
+```
+docker build -t remla-extension-project .
+```
+
+2) Run the container
+```
+docker run -it --rm -p 5000:5000 remla-extension-project
+```
+
+3) Access the apidocs (and use the api) via
+```
+http://127.0.0.1:5000/apidocs
+```
+
+4) Alternatively, send a StackOverflow title in the body of a post request:
+```
+curl -X POST "http://127.0.0.1:5000/predict" -H "accept: application/json" -H "Content-Type: application/json" -d "{ \"title\": \"Ajax data - Uncaught ReferenceError date is not defined.\"}"
+```
+
+
 # Multilabel classification on Stack Overflow tags
 Predict tags for posts from StackOverflow with multilabel classification approach.
 
