@@ -27,10 +27,5 @@ jobs:
 
             - name: Build and push
               run: |
-                  docker build \
-                    -t ${{ env.img }}:latest \
-                    -t ${{ env.img }}:${{ env.version_major }}-latest \
-                    -t ${{ env.img }}:${{ env.version_major }}.${{ env.version_minor}}-latest \
-                    -t ${{ env.img }}:${{ env.version }} \
-                    . \
+                  docker build -t ${{ env.img }}:${{ env.version }} . \
                   docker push ${{ env.img }}
