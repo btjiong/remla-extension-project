@@ -22,4 +22,4 @@ RUN mkdir output   && \
     python -u so_classifier/train_model.py
 
 
-CMD gunicorn app:app --bind 0.0.0.0:$PORT --reload
+CMD gunicorn so_classifier.serve:app --bind 0.0.0.0:$PORT --reload

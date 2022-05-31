@@ -22,8 +22,9 @@ RUN mkdir output   && \
     python -u so_classifier/train_model.py
 
 
-EXPOSE 5000
+#EXPOSE 5000
+#
+#ENTRYPOINT [ "python" ]
 
-ENTRYPOINT [ "python" ]
-
-CMD [ "so_classifier/serve.py" ]
+#CMD [ "so_classifier/serve.py" ]
+CMD gunicorn so_classifier.serve:app --bind 0.0.0.0:5000 --reload

@@ -9,7 +9,7 @@ import joblib
 from flask import Flask, jsonify, request
 from flasgger import Swagger
 
-from text_preprocessing import text_prepare
+from so_classifier.text_preprocessing import text_prepare
 
 app = Flask(__name__)
 swagger = Swagger(app)
