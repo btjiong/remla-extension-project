@@ -23,7 +23,8 @@ def train_tfidf(x_train, y_train, x_val, y_val, x_test):
     print("=============== TF-IDF model ===============")
     # TF-IDF features
     print("Generating TF-IDF features...")
-    X_train_tfidf, X_val_tfidf, tfidf_vectorizer = tfidf_features(
+    # pylint: disable=unused-variable
+    X_train_tfidf, X_val_tfidf, X_test_tfidf, tfidf_vectorizer = tfidf_features(
         x_train, x_val, x_test
     )
     dump(tfidf_vectorizer, "output/tfidf_vectorizer.joblib")
