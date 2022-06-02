@@ -16,4 +16,4 @@ jobs:
      - name: Build Docker image 
        run: docker build -t test .
      - name: Run tests inside the container
-       run: docker exec test python -m unittest so_classifier/test/
+       run: docker exec test python -m unittest discover
