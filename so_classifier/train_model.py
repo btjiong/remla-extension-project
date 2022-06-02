@@ -9,11 +9,11 @@
         5) saves the model
 """
 
+from evaluation import get_evaluation_scores
 from joblib import dump
 from multilabel_classifier import train_classifier, transform_binary
-from evaluation import get_evaluation_scores
-from text_to_vector import bag_of_words, tfidf_features
 from text_preprocessing import get_data
+from text_to_vector import bag_of_words, tfidf_features
 
 
 def train_tfidf(x_train, y_train, x_val, y_val, x_test):

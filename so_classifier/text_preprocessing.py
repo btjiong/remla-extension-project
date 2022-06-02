@@ -5,11 +5,12 @@
     tags and words counts.
 """
 
-import nltk
-from nltk.corpus import stopwords
-from ast import literal_eval
-import pandas as pd
 import re
+from ast import literal_eval
+
+import nltk
+import pandas as pd
+from nltk.corpus import stopwords
 
 # Download stopwords
 nltk.download("stopwords")

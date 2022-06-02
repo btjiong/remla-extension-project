@@ -1,5 +1,6 @@
-from so_classifier.text_preprocessing import text_prepare
 import unittest
+
+from so_classifier.text_preprocessing import text_prepare
 
 
 class TestTextPrepare(unittest.TestCase):

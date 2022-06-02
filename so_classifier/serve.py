@@ -6,8 +6,8 @@
         out: "{"title": "title", "result": "tags"}"
 """
 import joblib
-from flask import Flask, jsonify, request
 from flasgger import Swagger
+from flask import Flask, jsonify, request
 
 from so_classifier.text_preprocessing import text_prepare
 

@@ -8,9 +8,7 @@
      - [Area under precision-recall curve](http://scikit-learn.org/stable/modules/generated/sklearn.metrics.average_precision_score.html#sklearn.metrics.average_precision_score)
 """
 
-from sklearn.metrics import accuracy_score
-from sklearn.metrics import f1_score
-from sklearn.metrics import average_precision_score
+from sklearn.metrics import accuracy_score, average_precision_score, f1_score
 
 
 def get_evaluation_scores(y_val, predicted):

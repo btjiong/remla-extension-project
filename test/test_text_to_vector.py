@@ -1,5 +1,6 @@
-from so_classifier.text_to_vector import my_bag_of_words
 import unittest
+
+from so_classifier.text_to_vector import my_bag_of_words
 
 
 class TestTextVector(unittest.TestCase):

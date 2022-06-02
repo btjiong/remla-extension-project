@@ -2,9 +2,9 @@
     Analysis of the most important features
 """
 
+from multilabel_classifier import train_classifier, transform_binary
 from text_preprocessing import get_data
 from text_to_vector import bag_of_words, tfidf_features
-from multilabel_classifier import train_classifier, transform_binary
 
 
 def print_words_for_tag(classifier, tag, tags_classes, index_to_words):

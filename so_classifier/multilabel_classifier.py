@@ -4,9 +4,9 @@
     Functions for training the classifiers, and transforming features into binary.
 """
 
-from sklearn.preprocessing import MultiLabelBinarizer
-from sklearn.multiclass import OneVsRestClassifier
 from sklearn.linear_model import LogisticRegression
+from sklearn.multiclass import OneVsRestClassifier
+from sklearn.preprocessing import MultiLabelBinarizer
 
 
 def train_classifier(x_train, y_train, penalty="l1", C=1):
