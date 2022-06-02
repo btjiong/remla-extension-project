@@ -51,6 +51,6 @@ def predict():
 
     return jsonify({"title": title, "result": prediction})
 
-
+#Supressed a bandit B104 flag (open to non-local requests)
 if __name__ == "__main__":
-    app.run(host="0.0.0.0")
+    app.run(host="0.0.0.0") # nosec B104
