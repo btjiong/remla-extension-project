@@ -51,7 +51,10 @@ def train_bow(x_train, y_train, x_val, x_test, words_counts):
     print("================ BoW model =================")
     # Bag of Words vectors
     print("Generating BoW vectors...")
-    X_train_mybag = bag_of_words(x_train, x_val, x_test, words_counts)
+    # pylint: disable=unused-variable
+    X_train_mybag, X_val_mybag, X_test_mybag = bag_of_words(
+        x_train, x_val, x_test, words_counts
+    )
 
     # Train the classifiers for different data transformations: *bag-of-words* and *tf-idf*.
     print("Training the BoW classifier...")

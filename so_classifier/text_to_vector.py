@@ -46,6 +46,7 @@ def bow_dict(size, words_counts):
 
 
 def bag_of_words(x_train, x_val, x_test, words_counts):
+    # pylint: disable=unused-variable
     """
     Get BoW vectors for training, validation and test set
 
@@ -54,7 +55,7 @@ def bag_of_words(x_train, x_val, x_test, words_counts):
 
     return: BoW vectorized representation of each sample
     """
-    dic_size, words_to_index = bow_dict(5000, words_counts)
+    dic_size, index_to_words, words_to_index = bow_dict(5000, words_counts)
 
     x_train_mybag = sp_sparse.vstack(
         [
@@ -79,6 +80,7 @@ def bag_of_words(x_train, x_val, x_test, words_counts):
 
 
 def bow_transform(dataset, words_counts):
+    # pylint: disable=unused-variable
     """
     Transform a set of StackOverflow titles into BoW vectors
 
@@ -87,7 +89,7 @@ def bow_transform(dataset, words_counts):
 
     return: BoW vectorized representation of each sample
     """
-    dic_size, words_to_index = bow_dict(5000, words_counts)
+    dic_size, index_to_words, words_to_index = bow_dict(5000, words_counts)
 
     mybag = sp_sparse.vstack(
         [
