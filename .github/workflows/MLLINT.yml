@@ -34,7 +34,7 @@ jobs:
         
       #Run mypy
       - name: Run Mypy
-        run: mypy --strict $(git ls-files '*.py')
+        run: mypy $(git ls-files '*.py')
       
       #Run Isort (Check import order)
       - name: python-isort
