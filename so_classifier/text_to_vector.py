@@ -46,7 +46,6 @@ def bow_dict(size, words_counts):
 
 
 def bag_of_words(x_train, x_val, x_test, words_counts):
-    # pylint: disable=unbalanced-tuple-unpacking
     """
     Get BoW vectors for training, validation and test set
 
