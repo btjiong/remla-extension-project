@@ -15,12 +15,12 @@ from sklearn.metrics import average_precision_score
 
 def get_evaluation_scores(y_val, predicted):
     """
-        y_val: the actual labels
-        predicted: the predicted labels
+    y_val: the actual labels
+    predicted: the predicted labels
 
-        return: the accuracy, f1-score, and average precision
+    return: the accuracy, f1-score, and average precision
     """
     accuracy = accuracy_score(y_val, predicted)
-    f1 = f1_score(y_val, predicted, average='weighted')
-    avp = average_precision_score(y_val, predicted, average='macro')
+    f1 = f1_score(y_val, predicted, average="weighted")
+    avp = average_precision_score(y_val, predicted, average="macro")
     return accuracy, f1, avp
