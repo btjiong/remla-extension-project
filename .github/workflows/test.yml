@@ -14,6 +14,8 @@ jobs:
    steps:
      - uses: actions/checkout@v3
      - name: Build Docker image 
-       run: docker build -t test .
+       run: docker build -t test_image .
+     - name: Docker run image
+       run: docker run --name test -rm -i -t test_image
      - name: Run tests inside the container
        run: docker exec test python -m unittest discover
