@@ -11,7 +11,7 @@ ENV VIRTUAL_ENV=/root/venv
 RUN python -m venv $VIRTUAL_ENV
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
-
+COPY test test
 COPY so_classifier so_classifier
 COPY data data
 COPY requirements.txt .
