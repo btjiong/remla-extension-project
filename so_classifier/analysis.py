@@ -53,7 +53,8 @@ if __name__ == "__main__":
     classifier_mybag = train_classifier(X_train_mybag, y_train)
     classifier_tfidf = train_classifier(X_train_tfidf, y_train)
 
-    # Now you can create predictions for the data. You will need two types of predictions: labels and scores.
+    # Now you can create predictions for the data.
+    # You will need two types of predictions: labels and scores.
     y_val_predicted_labels_mybag = classifier_mybag.predict(X_val_mybag)
     y_val_predicted_scores_mybag = classifier_mybag.decision_function(X_val_mybag)
 

@@ -23,7 +23,7 @@ def train_tfidf(x_train, y_train, x_val, y_val, x_test):
     print("=============== TF-IDF model ===============")
     # TF-IDF features
     print("Generating TF-IDF features...")
-    X_train_tfidf, X_val_tfidf, X_test_tfidf, tfidf_vectorizer = tfidf_features(
+    X_train_tfidf, X_val_tfidf, tfidf_vectorizer = tfidf_features(
         x_train, x_val, x_test
     )
     dump(tfidf_vectorizer, "output/tfidf_vectorizer.joblib")
@@ -51,9 +51,7 @@ def train_bow(x_train, y_train, x_val, x_test, words_counts):
     print("================ BoW model =================")
     # Bag of Words vectors
     print("Generating BoW vectors...")
-    X_train_mybag, X_val_mybag, X_test_mybag = bag_of_words(
-        x_train, x_val, x_test, words_counts
-    )
+    X_train_mybag = bag_of_words(x_train, x_val, x_test, words_counts)
 
     # Train the classifiers for different data transformations: *bag-of-words* and *tf-idf*.
     print("Training the BoW classifier...")

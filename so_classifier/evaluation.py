@@ -1,11 +1,12 @@
+# pylint: disable=missing-docstring, C0301
 """
     Evaluation
 
     To evaluate the results we will use several classification metrics:
-     - [Accuracy](http://scikit-learn.org/stable/modules/generated/sklearn.metrics.accuracy_score.html)
-     - [F1-score](http://scikit-learn.org/stable/modules/generated/sklearn.metrics.f1_score.html)
-     - [Area under ROC-curve](http://scikit-learn.org/stable/modules/generated/sklearn.metrics.roc_auc_score.html)
-     - [Area under precision-recall curve](http://scikit-learn.org/stable/modules/generated/sklearn.metrics.average_precision_score.html#sklearn.metrics.average_precision_score)
+     - [Accuracy] (http://scikit-learn.org/stable/modules/generated/sklearn.metrics.accuracy_score.html)
+     - [F1-score] (http://scikit-learn.org/stable/modules/generated/sklearn.metrics.f1_score.html)
+     - [Area under ROC-curve] (http://scikit-learn.org/stable/modules/generated/sklearn.metrics.roc_auc_score.html)
+     - [Area under precision-recall curve] (http://scikit-learn.org/stable/modules/generated/sklearn.metrics.average_precision_score.html#sklearn.metrics.average_precision_score)
 """
 
 from sklearn.metrics import accuracy_score, average_precision_score, f1_score

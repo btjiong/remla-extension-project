@@ -1,7 +1,8 @@
 """
     Transforming text to a vector
 
-    Functions for fitting the BoW and TF-IDF vectorizers, and using these fitted vectorizers for transforming
+    Functions for fitting the BoW and TF-IDF vectorizers,
+    and using these fitted vectorizers for transforming
     StackOverflow titles into vectors/features.
 
 """
@@ -45,6 +46,7 @@ def bow_dict(size, words_counts):
 
 
 def bag_of_words(x_train, x_val, x_test, words_counts):
+    # pylint: disable=unbalanced-tuple-unpacking
     """
     Get BoW vectors for training, validation and test set
 
@@ -53,7 +55,7 @@ def bag_of_words(x_train, x_val, x_test, words_counts):
 
     return: BoW vectorized representation of each sample
     """
-    dic_size, index_to_words, words_to_index = bow_dict(5000, words_counts)
+    dic_size, words_to_index = bow_dict(5000, words_counts)
 
     x_train_mybag = sp_sparse.vstack(
         [
@@ -86,7 +88,7 @@ def bow_transform(dataset, words_counts):
 
     return: BoW vectorized representation of each sample
     """
-    dic_size, index_to_words, words_to_index = bow_dict(5000, words_counts)
+    dic_size, words_to_index = bow_dict(5000, words_counts)
 
     mybag = sp_sparse.vstack(
         [

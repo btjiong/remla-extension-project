@@ -1,8 +1,8 @@
 """
     Text preprocessing
 
-    Functions for reading and preprocessing the data. Use these functions to get the resulting datasets, and the
-    tags and words counts.
+    Functions for reading and preprocessing the data.
+    Use these functions to get the resulting datasets, and the tags and words counts.
 """
 
 import re
@@ -86,7 +86,8 @@ def get_data():
     return: the preprocessed data, and the tags and words counts
     """
     # You are provided a split to 3 sets: *train*, *validation* and *test*.
-    # All corpora (except for *test*) contain titles of the posts and corresponding tags (100 tags are available).
+    # All corpora (except for *test*) contain titles of the posts and corresponding tags.
+    # (100 tags are available)
     train = read_data("data/train.tsv")
     validation = read_data("data/validation.tsv")
     test = pd.read_csv("data/test.tsv", sep="\t")
