@@ -17,5 +17,12 @@ jobs:
        run: docker build -t test_image .
      - name: Docker run image
        run: docker run --name test --rm test_image
-     - name: Run tests inside the container
-       run: docker exec test python -m unittest discover
+       
+     - uses: docker/build-push-action@v2
+       with:
+        tags: test
+        push: false
+     - uses: addnab/docker-run-action@v3
+       with:
+        image: test
+        run: python -m unittest discover
