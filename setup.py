@@ -7,11 +7,11 @@ with io.open('requirements.txt', mode="r", encoding="utf-16") as f:
     required_deps = f.read().splitlines()
 
 setup(
-    name='type4py',
+    name='so-classifier',
     version=__version__,
     description='so_classifier: Tag classifier for StackOverflow titles',
     url='https://github.com/btjiong/remla-extension-project',
-    author='Bailey Tjiong',
+    author='Péter Angeli, Wessel Oosterbroek, Bailey Tjiong, and Christiaan Wiers',
     keywords='machine learaning tag inference prediction similarity learning python source code stackoverflow',
     packages=find_packages(),
     python_requries='>=3.6',
