@@ -6,9 +6,9 @@
         out: "{"title": "title", "result": "tags"}"
 """
 import joblib
-from flasgger import Swagger
-from flask import Flask, jsonify, request
 
+from flasgger import Swagger
+from flask import Flask, jsonify, request, make_response
 from so_classifier.text_preprocessing import text_prepare
 
 app = Flask(__name__)
@@ -17,6 +17,18 @@ swagger = Swagger(app)
 tfidf_model = joblib.load("output/tfidf_model.joblib")
 tfidf_vectorizer = joblib.load("output/tfidf_vectorizer.joblib")
 mlb = joblib.load("output/mlb.joblib")
+
+numPred = 0
+
+
+def addPred():
+    global numPred
+    numPred += 1
+
+
+def getPred():
+    global numPred
+    return numPred
 
 
 @app.route("/predict", methods=["POST"])
@@ -48,10 +60,22 @@ def predict():
     vectorized_title = tfidf_vectorizer.transform([prepared_title])
     prediction = tfidf_model.predict(vectorized_title)
     prediction = mlb.inverse_transform(prediction)
+    addPred()
 
     return jsonify({"title": title, "result": prediction})
+
+
+@app.route('/metrics', methods=['GET'])
+def metrics():
+    text = "# HELP num_pred The total number of requested predictions.\n"
+    text += "# TYPE num_pred counter\n"
+    text += "num_pred " + str(getPred()) + "\n\n"
+    response = make_response(text, 200)
+    response.mimetype = "text/plain"
+    return response
 
 
 # Supressed a bandit B104 flag (open to non-local requests)
 if __name__ == "__main__":
     app.run(host="0.0.0.0")  # nosec B104
+
