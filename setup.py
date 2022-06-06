@@ -16,8 +16,10 @@ setup(
     description="so_classifier: Tag classifier for StackOverflow titles",
     url="https://github.com/btjiong/remla-extension-project",
     author="Péter Angeli, Wessel Oosterbroek, Bailey Tjiong, and Christiaan Wiers",
-    keywords=("machine learaning tag inference prediction similarity"
-             "learning python source code stackoverflow"),
+    keywords=(
+        "machine learaning tag inference prediction similarity"
+        "learning python source code stackoverflow"
+    ),
     packages=find_packages(),
     python_requries=">=3.6",
     install_requires=required_deps,
