@@ -1,5 +1,7 @@
+from ast import literal_eval
+
 import pandas as pd
-from load_data import *
+from load_data import load_data
 
 paths = ['../data/validation.tsv', '../data/train.tsv', '../data/test.tsv']
 
@@ -65,13 +67,6 @@ def check_tags(titles, tags):
     return titles, tags
 
 
-# saving the validated dataframe as .tsv
-def save_as_tsv(p, df):
-    print("Now saving")
-    df.to_csv(p, index=False, sep='\t')
-    print("saved checked .tsv test file\n")
-
-
 # running the functions in order to validate the data
 def data_validation(data):
     print("--- DATA VALIDATION STARTED ---")
@@ -80,16 +75,19 @@ def data_validation(data):
         titles, tags = column_check(data, cols)
         titles, tags = check_title(titles, tags)
         titles, tags = check_tags(titles, tags)
-        return pd.DataFrame({'title': titles, 'tags': tags})
+        df = pd.DataFrame({'title': titles, 'tags': tags})
+        df['tags'] = df['tags'].apply(literal_eval)
+        return df
 
     elif int(cols) == 1:
         titles = column_check(data, cols)
         titles, tags = check_title(titles)
-        return pd.DataFrame({'title': titles})
+        df = pd.DataFrame({'title': titles})
+        return df
 
     else:
         print("Incorrect amount of columns")
-    #     THROW EXCEPTION HERE
+        # TODO THROW EXCEPTION HERE
 
 
-data_validation(load_data(paths[0]))
+# data_validation(load_data(paths[0]))

@@ -7,8 +7,6 @@
 
 import nltk
 from nltk.corpus import stopwords
-from ast import literal_eval
-import pandas as pd
 import re
 
 # Download stopwords
@@ -16,17 +14,6 @@ nltk.download('stopwords')
 REPLACE_BY_SPACE_RE = re.compile('[/(){}\[\]\|@,;]')
 BAD_SYMBOLS_RE = re.compile('[^0-9a-z #+_]')
 STOPWORDS = set(stopwords.words('english'))
-
-
-def read_data(filename):
-    """
-        filename: the filename
-
-        return: the data from the file
-    """
-    data = pd.read_csv(filename, sep='\t')
-    data['tags'] = data['tags'].apply(literal_eval)
-    return data
 
 
 def text_prepare(text):
@@ -74,15 +61,13 @@ def count_tags(corpus):
     return tags_counts
 
 
-def process_data():
+def process_data(train, validation=None, test=None):
     """
         return: the preprocessed data, and the tags and words counts
     """
-    # You are provided a split to 3 sets: *train*, *validation* and *test*.
-    # All corpora (except for *test*) contain titles of the posts and corresponding tags (100 tags are available).
-    train = read_data('data/train.tsv')
-    validation = read_data('data/validation.tsv')
-    test = pd.read_csv('data/test.tsv', sep='\t')
+    if (validation is None) or (test is None):
+        # TODO SPLIT DATA FUNCTION HERE
+        pass
 
     # For a more comfortable usage, initialize *X_train*, *X_val*, *X_test*, *y_train*, *y_val*.
     x_train, y_train = train['title'].values, train['tags'].values
