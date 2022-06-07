@@ -19,8 +19,8 @@ from text_preprocessing import process_data
 
 # 'data/' and 'output/' if running in docker
 # '../data' and '../output/' if running this locally
-data_dir = '../data/'
-output_dir = '../output/'
+data_dir = 'data/'
+output_dir = 'output/'
 
 
 def train_tfidf(x_train, y_train, x_val, y_val, x_test):
