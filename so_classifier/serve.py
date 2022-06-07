@@ -99,6 +99,7 @@ def predict():
         })
 
     accuracy = calculate_acc(prediction, tags)
+    update_total_acc(accuracy)
     add_pred()
     return jsonify({
         "title": title,
