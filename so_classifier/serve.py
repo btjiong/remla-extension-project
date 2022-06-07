@@ -15,9 +15,9 @@ app = Flask(__name__)
 swagger = Swagger(app)
 
 
-tfidf_model = joblib.load("../output/tfidf_model.joblib")
-tfidf_vectorizer = joblib.load("../output/tfidf_vectorizer.joblib")
-mlb = joblib.load("../output/mlb.joblib")
+tfidf_model = joblib.load("output/tfidf_model.joblib")
+tfidf_vectorizer = joblib.load("output/tfidf_vectorizer.joblib")
+mlb = joblib.load("output/mlb.joblib")
 
 num_pred = 0
 
@@ -53,7 +53,6 @@ def update_total_acc(acc):
     global num_pred
     global total_acc
     total_acc = round((num_pred * total_acc + acc) / (num_pred + 1), 2)
-    return total_acc
 
 
 def get_acc():
@@ -100,13 +99,11 @@ def predict():
         })
 
     accuracy = calculate_acc(prediction, tags)
-    total_accuracy = update_total_acc(accuracy)
     add_pred()
     return jsonify({
         "title": title,
         "result": prediction,
-        "accuracy": accuracy,
-        "total_accuracy": total_accuracy
+        "accuracy": accuracy
     })
 
 
@@ -129,5 +126,4 @@ def metrics():
 
 # Supressed a bandit B104 flag (open to non-local requests)
 if __name__ == "__main__":
-    # app.run(host="0.0.0.0")  # nosec B104
-    app.run(port='5000')
+    app.run(host="0.0.0.0")  # nosec B104
