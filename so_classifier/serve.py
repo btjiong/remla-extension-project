@@ -6,24 +6,62 @@
         out: "{"title": "title", "result": "tags"}"
 """
 import joblib
-from flask import Flask, jsonify, request
-from flasgger import Swagger
 
-from text_preprocessing import text_prepare
+from flasgger import Swagger
+from flask import Flask, jsonify, request, make_response
+from so_classifier.text_preprocessing import text_prepare
 
 app = Flask(__name__)
 swagger = Swagger(app)
 
-tfidf_model = joblib.load('../output/tfidf_model.joblib')
-tfidf_vectorizer = joblib.load('../output/tfidf_vectorizer.joblib')
-mlb = joblib.load('../output/mlb.joblib')
+
+tfidf_model = joblib.load("../output/tfidf_model.joblib")
+tfidf_vectorizer = joblib.load("../output/tfidf_vectorizer.joblib")
+mlb = joblib.load("../output/mlb.joblib")
+
+num_pred = 0
 
 total_tp = 0
 total_fn = 0
 total_fp = 0
-total_accuracy = 0
+total_acc = 0
 
-@app.route('/predict', methods=['POST'])
+
+def add_pred():
+    global num_pred
+    num_pred += 1
+
+
+def get_pred():
+    global num_pred
+    return num_pred
+
+
+def calculate_acc(pred, actual):
+    tp = 0
+    fn = 0
+    for x in actual:
+        if x in pred:
+            tp += 1
+        else:
+            fn += 1
+    fp = len(pred) - tp
+    return round(tp / (tp + fn + fp), 2)
+
+
+def update_total_acc(acc):
+    global num_pred
+    global total_acc
+    total_acc = round((num_pred * total_acc + acc) / (num_pred + 1), 2)
+    return total_acc
+
+
+def get_acc():
+    global total_acc
+    return total_acc
+
+
+@app.route("/predict", methods=["POST"])
 def predict():
     """
     Predict whether the tag of a StackOverflow title.
@@ -55,13 +93,15 @@ def predict():
     prediction = mlb.inverse_transform(prediction)[0]
 
     if tags is None:
+        add_pred()
         return jsonify({
             "title": title,
             "result": prediction
         })
 
     accuracy = calculate_acc(prediction, tags)
-    global total_accuracy
+    total_accuracy = update_total_acc(accuracy)
+    add_pred()
     return jsonify({
         "title": title,
         "result": prediction,
@@ -70,30 +110,24 @@ def predict():
     })
 
 
-def calculate_acc(pred, actual):
-    tp = 0
-    fn = 0
-    for x in actual:
-        if x in pred:
-            tp += 1
-        else:
-            fn += 1
-    fp = len(pred) - tp
-    update_acc(tp, fn, fp)
-    return round(tp / (tp + fn + fp), 2)
+@app.route('/metrics', methods=['GET'])
+def metrics():
+    # Number of predictions
+    text = "# HELP num_pred The total number of requested predictions.\n"
+    text += "# TYPE num_pred counter\n"
+    text += "num_pred " + str(get_pred()) + "\n\n"
+
+    # Accuracy
+    text += "# HELP acc Accuracy of the tag predictions.\n"
+    text += "# TYPE acc gauge\n"
+    text += "acc " + str(get_acc()) + "\n\n"
+
+    response = make_response(text, 200)
+    response.mimetype = "text/plain"
+    return response
 
 
-def update_acc(tp, fn, fp):
-    global total_tp
-    global total_fn
-    global total_fp
-    global total_accuracy
-    total_tp += tp
-    total_fn += fn
-    total_fp += fp
-    total_accuracy = round(total_tp / (total_tp + total_fn + total_fp), 2)
-
-
-if __name__ == '__main__':
-    # app.run(host='0.0.0.0')
+# Supressed a bandit B104 flag (open to non-local requests)
+if __name__ == "__main__":
+    # app.run(host="0.0.0.0")  # nosec B104
     app.run(port='5000')

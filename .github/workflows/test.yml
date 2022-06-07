@@ -1,0 +1,26 @@
+name: Test
+on:
+  push:
+    branches:
+       - '**'  
+  pull_request:
+    branches:
+       - '**'  
+
+jobs:
+  build:
+   runs-on: ubuntu-20.04
+  
+   steps:
+     - uses: actions/checkout@v3
+     - name: Build Docker image 
+       run: docker build -t test_image .
+
+     - uses: docker/build-push-action@v2
+       with:
+        tags: test
+        push: false
+     - uses: addnab/docker-run-action@v3
+       with:
+        image: test
+        run: python -m unittest discover
