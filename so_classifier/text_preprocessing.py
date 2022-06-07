@@ -74,7 +74,7 @@ def count_tags(corpus):
     return tags_counts
 
 
-def get_data():
+def process_data():
     """
         return: the preprocessed data, and the tags and words counts
     """

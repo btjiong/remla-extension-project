@@ -2,7 +2,7 @@
     Analysis of the most important features
 """
 
-from text_preprocessing import get_data
+from text_preprocessing import process_data
 from text_to_vector import bag_of_words, tfidf_features
 from multilabel_classifier import train_classifier, transform_binary
 
@@ -31,7 +31,7 @@ def print_words_for_tag(classifier, tag, tags_classes, index_to_words):
 
 
 if __name__ == '__main__':
-    x_train, y_train, x_val, y_val, x_test, tags_counts, words_counts = get_data()
+    x_train, y_train, x_val, y_val, x_test, tags_counts, words_counts = process_data()
 
     X_train_mybag, X_val_mybag, X_test_mybag = bag_of_words(x_train, x_val, x_test, words_counts)
 

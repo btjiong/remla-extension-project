@@ -13,7 +13,7 @@ from joblib import dump
 from multilabel_classifier import train_classifier, transform_binary
 from evaluation import get_evaluation_scores
 from text_to_vector import bag_of_words, tfidf_features
-from text_preprocessing import get_data
+from text_preprocessing import process_data
 
 
 def train_tfidf(x_train, y_train, x_val, y_val, x_test):
@@ -64,7 +64,7 @@ def train_bow(x_train, y_train, x_val, x_test, words_counts):
 if __name__ == "__main__":
     # Preprocessing data
     print("Preprocessing the data...")
-    x_train, y_train, x_val, y_val, x_test, tags_counts, words_counts = get_data()
+    x_train, y_train, x_val, y_val, x_test, tags_counts, words_counts = process_data()
 
     # Transform labels to binary
     mlb, y_train, y_val = transform_binary(y_train, y_val, tags_counts)
