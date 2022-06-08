@@ -14,21 +14,50 @@ from so_classifier.text_preprocessing import text_prepare
 app = Flask(__name__)
 swagger = Swagger(app)
 
+
 tfidf_model = joblib.load("output/tfidf_model.joblib")
 tfidf_vectorizer = joblib.load("output/tfidf_vectorizer.joblib")
 mlb = joblib.load("output/mlb.joblib")
 
-numPred = 0
+num_pred = 0
+
+total_tp = 0
+total_fn = 0
+total_fp = 0
+total_acc = 0
 
 
-def addPred():
-    global numPred
-    numPred += 1
+def add_pred():
+    global num_pred
+    num_pred += 1
 
 
-def getPred():
-    global numPred
-    return numPred
+def get_pred():
+    global num_pred
+    return num_pred
+
+
+def calculate_acc(pred, actual):
+    tp = 0
+    fn = 0
+    for x in actual:
+        if x in pred:
+            tp += 1
+        else:
+            fn += 1
+    fp = len(pred) - tp
+    return round(tp / (tp + fn + fp), 2)
+
+
+def update_total_acc(acc):
+    global num_pred
+    global total_acc
+    total_acc = round((num_pred * total_acc + acc) / (num_pred + 1), 2)
+
+
+def get_acc():
+    global total_acc
+    return total_acc
 
 
 @app.route("/predict", methods=["POST"])
@@ -55,21 +84,42 @@ def predict():
         description: "The result of the classification: tag(s)."
     """
     input_data = request.get_json()
-    title = input_data.get("title")
+    title = input_data.get('title')
+    tags = input_data.get('tags')
     prepared_title = text_prepare(title)
     vectorized_title = tfidf_vectorizer.transform([prepared_title])
     prediction = tfidf_model.predict(vectorized_title)
-    prediction = mlb.inverse_transform(prediction)
-    addPred()
+    prediction = mlb.inverse_transform(prediction)[0]
 
-    return jsonify({"title": title, "result": prediction})
+    if tags is None:
+        add_pred()
+        return jsonify({
+            "title": title,
+            "result": prediction
+        })
+
+    accuracy = calculate_acc(prediction, tags)
+    update_total_acc(accuracy)
+    add_pred()
+    return jsonify({
+        "title": title,
+        "result": prediction,
+        "accuracy": accuracy
+    })
 
 
 @app.route('/metrics', methods=['GET'])
 def metrics():
+    # Number of predictions
     text = "# HELP num_pred The total number of requested predictions.\n"
     text += "# TYPE num_pred counter\n"
-    text += "num_pred " + str(getPred()) + "\n\n"
+    text += "num_pred " + str(get_pred()) + "\n\n"
+
+    # Accuracy
+    text += "# HELP acc Accuracy of the tag predictions.\n"
+    text += "# TYPE acc gauge\n"
+    text += "acc " + str(get_acc()) + "\n\n"
+
     response = make_response(text, 200)
     response.mimetype = "text/plain"
     return response
@@ -78,4 +128,3 @@ def metrics():
 # Supressed a bandit B104 flag (open to non-local requests)
 if __name__ == "__main__":
     app.run(host="0.0.0.0")  # nosec B104
-
