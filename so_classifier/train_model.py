@@ -9,7 +9,6 @@
         5) saves the model
 """
 
-from evaluation import get_evaluation_scores
 from joblib import dump
 from multilabel_classifier import train_classifier, transform_binary
 from evaluation import get_evaluation_scores

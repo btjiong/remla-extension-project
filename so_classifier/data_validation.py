@@ -3,8 +3,6 @@ from ast import literal_eval
 import pandas as pd
 from load_data import load_data
 
-paths = ['../data/validation.tsv', '../data/train.tsv', '../data/test.tsv']
-
 
 # loading the dataframe from load_data.py and checking the amount of columns
 def column_check(data, cols):
@@ -92,5 +90,3 @@ def data_validation(data):
         print("Incorrect amount of columns")
         # TODO THROW EXCEPTION HERE
 
-
-data_validation(load_data(paths[0]))
