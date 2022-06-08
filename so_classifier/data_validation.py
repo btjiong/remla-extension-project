@@ -12,59 +12,64 @@ def column_check(data, cols):
     if (int(cols)) == 2:
         titles = data['title']
         tags = data['tags']
-        if (titles.isnull().sum() + tags.isnull().sum() == 0) and (len(titles) == len(tags)):
-            pass
-        else:
+        if (titles.isnull().sum() + tags.isnull().sum() != 0) or (len(titles) != len(tags)):
             print("Missing values are found, please check!")
-        return titles, tags
+            # TODO Throw exception
 
     elif (int(cols)) == 1:
         titles = data['title']
-        if (titles.isnull().sum()) == 0:
-            pass
-        else:
+        if (titles.isnull().sum()) != 0:
             print("Missing values are found, please check!")
-        return titles
+            # TODO Throw exception
 
 
 # checking the titles
-def check_title(titles, tags=None):
+def check_title(data):
     print('Checking titles')
+    titles = data['title'].values
     for i in range(len(titles)):
         curr_title = titles[i]
         if isinstance(curr_title, str):
-            pass
+            if len(curr_title) > 150:
+                print(f'The title in row {i} has exceeded the 150 character limit and is now deleted')
+                data.drop(i, inplace=True)
+                data.reset_index(drop=True, inplace=True)
         else:
-            print(i, curr_title, 'has is no string and is now deleted')
-            titles.delete(i)
-            if tags is not None:
-                tags.delete(i)
+            print(f'The title in row {i} is not a string and is now deleted')
+            data.drop(i, inplace=True)
+            data.reset_index(drop=True, inplace=True)
 
     print("Checking titles done")
-    return titles, tags
+    return data
 
 
 # checking the tags
-def check_tags(titles, tags):
+def check_tags(data):
     print('Checking tags')
-    for i in range(len(tags)):
-        curr_tag = tags[i]
-        if isinstance(curr_tag, str):
-            sep_list = ["[", "]", "'"]
+    corpus = data['tags'].values
+    for i in range(len(corpus)):
+        tags = corpus[i]
 
-            for sep in range(len(sep_list)):
-                if curr_tag.find(sep_list[sep]) != -1:
-                    pass
+        if isinstance(tags, list):
+            for tag in tags:
+                if isinstance(tag, str):
+                    if len(tag) > 35:
+                        print(f'A tag in row {i} has exceeded the 35 character limit and is now deleted')
+                        data.drop(i, inplace=True)
+                        data.reset_index(drop=True, inplace=True)
+                        break
                 else:
-                    print("tag seperator not found in: ", curr_tag)
-                    tags.delete(i)
-                    titles.delete(i)
+                    print(f'A tag in row {i} is not a string and is now deleted')
+                    data.drop(i, inplace=True)
+                    data.reset_index(drop=True, inplace=True)
+                    break
+
         else:
-            print(i, curr_tag, 'tag is no string and is now deleted')
-            tags.delete(i)
-            titles.delete(i)
+            print(f'Tags in row {i} is not a list and is now deleted')
+            data.drop(i, inplace=True)
+            data.reset_index(drop=True, inplace=True)
     print("Checking tags done")
-    return titles, tags
+    return data
 
 
 # running the functions in order to validate the data
@@ -72,17 +77,15 @@ def data_validation(data):
     print("--- DATA VALIDATION STARTED ---")
     cols = int(data.shape[1])
     if int(cols) == 2:
-        titles, tags = column_check(data, cols)
-        titles, tags = check_title(titles, tags)
-        titles, tags = check_tags(titles, tags)
-        df = pd.DataFrame({'title': titles, 'tags': tags})
-        df['tags'] = df['tags'].apply(literal_eval)
+        data['tags'] = data['tags'].apply(literal_eval)
+        column_check(data, cols)
+        title_data = check_title(data)
+        df = check_tags(title_data)
         return df
 
     elif int(cols) == 1:
-        titles = column_check(data, cols)
-        titles, tags = check_title(titles)
-        df = pd.DataFrame({'title': titles})
+        column_check(data, cols)
+        df = check_title(data)
         return df
 
     else:
@@ -90,4 +93,4 @@ def data_validation(data):
         # TODO THROW EXCEPTION HERE
 
 
-# data_validation(load_data(paths[0]))
+data_validation(load_data(paths[0]))
