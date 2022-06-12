@@ -1,5 +1,5 @@
 """
-    Contains test concerded with the preprocssing of the pvoided data.
+    Contains tests concering the preprocssing of the provided data.
 """
 
 import unittest
@@ -9,7 +9,7 @@ from so_classifier.text_preprocessing import text_prepare
 
 class TestTextPrepare(unittest.TestCase):
     """
-    Contains test concerded with the preprocssing of the pvoided data.
+    Contains test concering with the preprocssing of the provided data.
     """
 
     def test_simple_text_prepare(self):

@@ -6,9 +6,9 @@
         out: "{"title": "title", "result": "tags"}"
 """
 import joblib
-
 from flasgger import Swagger
-from flask import Flask, jsonify, request, make_response
+from flask import Flask, jsonify, make_response, request
+
 from so_classifier.text_preprocessing import text_prepare
 
 app = Flask(__name__)

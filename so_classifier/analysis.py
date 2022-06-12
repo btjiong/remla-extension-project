@@ -3,8 +3,8 @@
 """
 from data_validation import data_validation
 from load_data import load_data
-from text_preprocessing import process_data
 from multilabel_classifier import train_classifier, transform_binary
+from text_preprocessing import process_data
 from text_to_vector import bag_of_words, tfidf_features
 
 
