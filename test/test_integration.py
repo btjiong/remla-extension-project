@@ -23,7 +23,6 @@ class TestTextPrepare(unittest.TestCase):
         tfidf_vectorizer = joblib.load("output/tfidf_vectorizer.joblib")
         mlb = joblib.load("output/mlb.joblib")
 
-
         title = "Python Script execute commands in Terminal"
         prepared_title = text_prepare(title)
         vectorized_title = tfidf_vectorizer.transform([prepared_title])
@@ -36,8 +35,8 @@ class TestTextPrepare(unittest.TestCase):
         prediction_noise = tfidf_model.predict(vectorized_titl_noise)
         prediction_noise = mlb.inverse_transform(prediction_noise)[0]
 
-
         self.assertEquals(prediction, prediction_noise)
+
 
 if __name__ == "__main__":
     unittest.main()
