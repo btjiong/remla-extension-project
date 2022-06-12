@@ -35,11 +35,13 @@ def print_words_for_tag(classifier, tag, tags_classes, index_to_words):
     print("Top negative words:\t{}\n".format(", ".join(top_negative_words)))
 
 
-if __name__ == '__main__':
-    train = data_validation(load_data('../data/train.tsv'))
-    validation = data_validation(load_data('../data/validation.tsv'))
-    test = data_validation(load_data('../data/test.tsv'))
-    x_train, y_train, x_val, y_val, x_test, tags_counts, words_counts = process_data(train, validation, test)
+if __name__ == "__main__":
+    train = data_validation(load_data("../data/train.tsv"))
+    validation = data_validation(load_data("../data/validation.tsv"))
+    test = data_validation(load_data("../data/test.tsv"))
+    x_train, y_train, x_val, y_val, x_test, tags_counts, words_counts = process_data(
+        train, validation, test
+    )
 
     X_train_mybag, X_val_mybag, X_test_mybag = bag_of_words(
         x_train, x_val, x_test, words_counts

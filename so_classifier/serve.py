@@ -84,8 +84,8 @@ def predict():
         description: "The result of the classification: tag(s)."
     """
     input_data = request.get_json()
-    title = input_data.get('title')
-    tags = input_data.get('tags')
+    title = input_data.get("title")
+    tags = input_data.get("tags")
     prepared_title = text_prepare(title)
     vectorized_title = tfidf_vectorizer.transform([prepared_title])
     prediction = tfidf_model.predict(vectorized_title)
@@ -93,22 +93,15 @@ def predict():
 
     if tags is None:
         add_pred()
-        return jsonify({
-            "title": title,
-            "result": prediction
-        })
+        return jsonify({"title": title, "result": prediction})
 
     accuracy = calculate_acc(prediction, tags)
     update_total_acc(accuracy)
     add_pred()
-    return jsonify({
-        "title": title,
-        "result": prediction,
-        "accuracy": accuracy
-    })
+    return jsonify({"title": title, "result": prediction, "accuracy": accuracy})
 
 
-@app.route('/metrics', methods=['GET'])
+@app.route("/metrics", methods=["GET"])
 def metrics():
     # Number of predictions
     text = "# HELP num_pred The total number of requested predictions.\n"
