@@ -1,4 +1,4 @@
-name: MLLINT
+name: StaticAnalysis
 
 on:
   push:
