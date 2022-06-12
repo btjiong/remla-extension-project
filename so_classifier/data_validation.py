@@ -1,8 +1,5 @@
 from ast import literal_eval
 
-import pandas as pd
-from load_data import load_data
-
 
 # loading the dataframe from load_data.py and checking the amount of columns
 def column_check(data, cols):

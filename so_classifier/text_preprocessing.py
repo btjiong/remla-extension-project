@@ -6,10 +6,7 @@
 """
 
 import re
-from ast import literal_eval
-
 import nltk
-import pandas as pd
 from nltk.corpus import stopwords
 
 # Download stopwords

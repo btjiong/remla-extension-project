@@ -35,7 +35,7 @@ class TestTextPrepare(unittest.TestCase):
         prediction_noise = tfidf_model.predict(vectorized_titl_noise)
         prediction_noise = mlb.inverse_transform(prediction_noise)[0]
 
-        self.assertEquals(prediction, prediction_noise)
+        self.assertEqual(prediction, prediction_noise)
 
 
 if __name__ == "__main__":

@@ -33,7 +33,6 @@ def add_pred():
 
 
 def get_pred():
-    global num_pred
     return num_pred
 
 
@@ -50,13 +49,11 @@ def calculate_acc(pred, actual):
 
 
 def update_total_acc(acc):
-    global num_pred
     global total_acc
     total_acc = round((num_pred * total_acc + acc) / (num_pred + 1), 2)
 
 
 def get_acc():
-    global total_acc
     return total_acc
 
 
