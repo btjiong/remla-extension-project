@@ -95,6 +95,14 @@ def predict():
     accuracy = calculate_acc(prediction, tags)
     update_total_acc(accuracy)
     add_pred()
+
+
+    Path("/internal-data").mkdir(parents=True, exist_ok=True)
+
+    f = Path('/internal-data/retrain.txt').open('a')
+    f.write(title + "\t" + str(tags) + "\n")
+    f.close()
+
     return jsonify({"title": title, "result": prediction, "accuracy": accuracy})
 
 

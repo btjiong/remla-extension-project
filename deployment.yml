@@ -16,9 +16,17 @@ spec:
     spec:
       containers:
       - name: stack
-        image: ghcr.io/btjiong/remla-extension-project
+        image: local-image-name
+        imagePullPolicy: Never
         ports:
         - containerPort: 5000
+        volumeMounts:
+        - mountPath: /internal-data
+          name: test-volume
+      volumes:
+      - name: test-volume
+        hostPath:
+          path: /data
 ---
 apiVersion: v1
 kind: Service
