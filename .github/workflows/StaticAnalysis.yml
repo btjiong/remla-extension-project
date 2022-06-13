@@ -1,4 +1,4 @@
-name: MLLINT
+name: StaticAnalysis
 
 on:
   push:
@@ -46,12 +46,13 @@ jobs:
     
       #Run pylint
       - name: GitHub Action for pylint
-        run: pylint $(git ls-files '*.py')
+        run: pylint --fail-under=8 $(git ls-files '*.py')
       
       #Publish the bandit output as an artifact
       - uses: actions/upload-artifact@v3
         if: always()
         with:
+          name: Bandit security report
           path: |
             output/security_report.txt
         

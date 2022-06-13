@@ -6,9 +6,9 @@
         out: "{"title": "title", "result": "tags"}"
 """
 import joblib
-
 from flasgger import Swagger
-from flask import Flask, jsonify, request, make_response
+from flask import Flask, jsonify, make_response, request
+
 from so_classifier.text_preprocessing import text_prepare
 
 app = Flask(__name__)
@@ -33,7 +33,6 @@ def add_pred():
 
 
 def get_pred():
-    global num_pred
     return num_pred
 
 
@@ -50,13 +49,11 @@ def calculate_acc(pred, actual):
 
 
 def update_total_acc(acc):
-    global num_pred
     global total_acc
     total_acc = round((num_pred * total_acc + acc) / (num_pred + 1), 2)
 
 
 def get_acc():
-    global total_acc
     return total_acc
 
 
@@ -84,8 +81,8 @@ def predict():
         description: "The result of the classification: tag(s)."
     """
     input_data = request.get_json()
-    title = input_data.get('title')
-    tags = input_data.get('tags')
+    title = input_data.get("title")
+    tags = input_data.get("tags")
     prepared_title = text_prepare(title)
     vectorized_title = tfidf_vectorizer.transform([prepared_title])
     prediction = tfidf_model.predict(vectorized_title)
@@ -93,22 +90,15 @@ def predict():
 
     if tags is None:
         add_pred()
-        return jsonify({
-            "title": title,
-            "result": prediction
-        })
+        return jsonify({"title": title, "result": prediction})
 
     accuracy = calculate_acc(prediction, tags)
     update_total_acc(accuracy)
     add_pred()
-    return jsonify({
-        "title": title,
-        "result": prediction,
-        "accuracy": accuracy
-    })
+    return jsonify({"title": title, "result": prediction, "accuracy": accuracy})
 
 
-@app.route('/metrics', methods=['GET'])
+@app.route("/metrics", methods=["GET"])
 def metrics():
     # Number of predictions
     text = "# HELP num_pred The total number of requested predictions.\n"
