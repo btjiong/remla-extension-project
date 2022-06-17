@@ -20,6 +20,7 @@ RUN mkdir output   && \
     python -m pip install --upgrade pip  && \
     pip install -r requirements.txt && \
     gdown --folder https://drive.google.com/drive/folders/1D5wxqjiL1OiVL7EZXLY9YvkAXqlTtj2d?usp=sharing && \
+    gdown -O data/online.tsv https://docs.google.com/spreadsheets/d/1XeQkfdNCQB8L1EmwSEzgMeOSq3bXoKBh9JN337UGhSI/export?format=tsv && \
     python -u so_classifier/train_model.py
 
 
