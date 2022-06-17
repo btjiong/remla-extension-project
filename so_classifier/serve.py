@@ -75,7 +75,7 @@ def upload_data(data):
         spreadsheetId=SPREADSHEET_ID,
         range="A1:A2",
         body={
-            # "majorDimension": "ROWS",
+            "majorDimension": "ROWS",
             "values": data
         },
         valueInputOption="USER_ENTERED",
