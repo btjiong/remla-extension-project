@@ -8,17 +8,30 @@
 import joblib
 from flasgger import Swagger
 from flask import Flask, jsonify, make_response, request
+from google.oauth2 import service_account
+from googleapiclient.discovery import build
 
 from so_classifier.text_preprocessing import text_prepare
 
 app = Flask(__name__)
 swagger = Swagger(app)
 
-
+# Load model
 tfidf_model = joblib.load("output/tfidf_model.joblib")
 tfidf_vectorizer = joblib.load("output/tfidf_vectorizer.joblib")
 mlb = joblib.load("output/mlb.joblib")
 
+# Set up Google Drive API
+SCOPES = ["https://www.googleapis.com/auth/drive"]
+SERVICE_ACCOUNT_FILE = "so_classifier/credentials.json"
+SPREADSHEET_ID = "1XeQkfdNCQB8L1EmwSEzgMeOSq3bXoKBh9JN337UGhSI"
+
+credentials = service_account.Credentials.from_service_account_file(
+    SERVICE_ACCOUNT_FILE, scopes=SCOPES
+)
+service = build("sheets", "v4", credentials=credentials)
+
+# Number of predictions and accuracy metrics
 num_pred = 0
 
 total_tp = 0
@@ -50,11 +63,20 @@ def calculate_acc(pred, actual):
 
 def update_total_acc(acc):
     global total_acc
-    total_acc = round((num_pred * total_acc + acc) / (num_pred + 1), 2)
+    total_acc = round(((num_pred - 1) * total_acc + acc) / num_pred, 2)
 
 
 def get_acc():
     return total_acc
+
+
+def upload_data(data):
+    service.spreadsheets().values().append(
+        spreadsheetId=SPREADSHEET_ID,
+        range="A1:A2",
+        body={"majorDimension": "ROWS", "values": data},
+        valueInputOption="USER_ENTERED",
+    ).execute()
 
 
 @app.route("/predict", methods=["POST"])
@@ -88,13 +110,19 @@ def predict():
     prediction = tfidf_model.predict(vectorized_title)
     prediction = mlb.inverse_transform(prediction)[0]
 
+    add_pred()
     if tags is None:
         add_pred()
         return jsonify({"title": title, "result": prediction})
 
+    upload_data(
+        [
+            [title, str(tags)],
+        ]
+    )
+
     accuracy = calculate_acc(prediction, tags)
     update_total_acc(accuracy)
-    add_pred()
     return jsonify({"title": title, "result": prediction, "accuracy": accuracy})
 
 
