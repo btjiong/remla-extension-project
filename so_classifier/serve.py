@@ -8,8 +8,9 @@
 import joblib
 from flasgger import Swagger
 from flask import Flask, jsonify, make_response, request
-from googleapiclient.discovery import build
 from google.oauth2 import service_account
+from googleapiclient.discovery import build
+
 from so_classifier.text_preprocessing import text_prepare
 
 app = Flask(__name__)
