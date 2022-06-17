@@ -8,7 +8,8 @@
 import joblib
 from flasgger import Swagger
 from flask import Flask, jsonify, make_response, request
-
+from googleapiclient.discovery import build
+from google.oauth2 import service_account
 from so_classifier.text_preprocessing import text_prepare
 
 app = Flask(__name__)
@@ -56,6 +57,16 @@ def update_total_acc(acc):
 def get_acc():
     return total_acc
 
+SHEETS_READ_WRITE_SCOPE = 'https://www.googleapis.com/auth/spreadsheets'
+SCOPES = [SHEETS_READ_WRITE_SCOPE]
+SERVICE_ACCOUNT_FILE = 'credentials.json'
+
+
+def get_or_create_credentials(scopes):
+    credentials = service_account.Credentials.from_service_account_file(
+        SERVICE_ACCOUNT_FILE, scopes=SCOPES)
+    return credentials
+
 
 @app.route("/predict", methods=["POST"])
 def predict():
@@ -92,6 +103,23 @@ def predict():
         add_pred()
         return jsonify({"title": title, "result": prediction})
 
+    spreadsheet_id = '1XeQkfdNCQB8L1EmwSEzgMeOSq3bXoKBh9JN337UGhSI'
+    rows = [
+        [title, str(tags)],
+    ]
+
+    credentials = get_or_create_credentials(scopes=SCOPES)  # or use GoogleCredentials.get_application_default()
+    service = build('sheets', 'v4', credentials=credentials)
+    service.spreadsheets().values().append(
+        spreadsheetId=spreadsheet_id,
+        range="A1:A2",
+        body={
+            "majorDimension": "ROWS",
+            "values": rows
+        },
+        valueInputOption="USER_ENTERED"
+    ).execute()
+
     accuracy = calculate_acc(prediction, tags)
     update_total_acc(accuracy)
     add_pred()
@@ -117,4 +145,4 @@ def metrics():
 
 # Supressed a bandit B104 flag (open to non-local requests)
 if __name__ == "__main__":
-    app.run(host="0.0.0.0")  # nosec B104
+    app.run(debug=True)  # nosec B104
