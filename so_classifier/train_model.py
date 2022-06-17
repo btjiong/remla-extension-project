@@ -12,7 +12,7 @@
 from data_validation import data_validation
 from evaluation import get_evaluation_scores
 from joblib import dump
-from load_data import load_data, save_data
+from load_data import concat_data, load_data, save_data, split_data
 from multilabel_classifier import train_classifier, transform_binary
 from text_preprocessing import process_data
 from text_to_vector import bag_of_words, tfidf_features
@@ -79,11 +79,18 @@ if __name__ == "__main__":
     train = data_validation(load_data(DATA_DIR + "train.tsv"))
     validation = data_validation(load_data(DATA_DIR + "validation.tsv"))
     test = data_validation(load_data(DATA_DIR + "test.tsv"))
+    online = data_validation(load_data(DATA_DIR + "online.tsv"))
+    online_train, online_val, online_test = split_data(online)
+
+    # Append the initial data with the new online data
+    train = concat_data(train, online_train)
+    validation = concat_data(validation, online_val)
+    test = concat_data(test, online_test)
 
     # Save validated data to file
-    save_data(DATA_DIR + "train_new.tsv", train)
-    save_data(DATA_DIR + "validation_new.tsv", validation)
-    save_data(DATA_DIR + "test_new.tsv", test)
+    # save_data(DATA_DIR + "train.tsv", train)
+    # save_data(DATA_DIR + "validation.tsv", validation)
+    # save_data(DATA_DIR + "test.tsv", test)
 
     # Preprocessing data
     print("Preprocessing the data...")
