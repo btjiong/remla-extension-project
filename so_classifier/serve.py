@@ -21,13 +21,14 @@ tfidf_vectorizer = joblib.load("output/tfidf_vectorizer.joblib")
 mlb = joblib.load("output/mlb.joblib")
 
 # Set up Google Drive API
-SCOPES = ['https://www.googleapis.com/auth/drive']
-SERVICE_ACCOUNT_FILE = 'so_classifier/credentials.json'
-SPREADSHEET_ID = '1XeQkfdNCQB8L1EmwSEzgMeOSq3bXoKBh9JN337UGhSI'
+SCOPES = ["https://www.googleapis.com/auth/drive"]
+SERVICE_ACCOUNT_FILE = "so_classifier/credentials.json"
+SPREADSHEET_ID = "1XeQkfdNCQB8L1EmwSEzgMeOSq3bXoKBh9JN337UGhSI"
 
 credentials = service_account.Credentials.from_service_account_file(
-    SERVICE_ACCOUNT_FILE, scopes=SCOPES)
-service = build('sheets', 'v4', credentials=credentials)
+    SERVICE_ACCOUNT_FILE, scopes=SCOPES
+)
+service = build("sheets", "v4", credentials=credentials)
 
 # Number of predictions and accuracy metrics
 num_pred = 0
@@ -76,7 +77,7 @@ def upload_data(data):
             # "majorDimension": "ROWS",
             "values": data
         },
-        valueInputOption="USER_ENTERED"
+        valueInputOption="USER_ENTERED",
     ).execute()
 
 
@@ -116,7 +117,11 @@ def predict():
         add_pred()
         return jsonify({"title": title, "result": prediction})
 
-    upload_data([[title, str(tags)], ])
+    upload_data(
+        [
+            [title, str(tags)],
+        ]
+    )
 
     accuracy = calculate_acc(prediction, tags)
     update_total_acc(accuracy)
