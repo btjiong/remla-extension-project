@@ -15,11 +15,21 @@ from so_classifier.text_preprocessing import text_prepare
 app = Flask(__name__)
 swagger = Swagger(app)
 
-
+# Load model
 tfidf_model = joblib.load("output/tfidf_model.joblib")
 tfidf_vectorizer = joblib.load("output/tfidf_vectorizer.joblib")
 mlb = joblib.load("output/mlb.joblib")
 
+# Set up Google Drive API
+SCOPES = ['https://www.googleapis.com/auth/drive']
+SERVICE_ACCOUNT_FILE = 'so_classifier/credentials.json'
+SPREADSHEET_ID = '1XeQkfdNCQB8L1EmwSEzgMeOSq3bXoKBh9JN337UGhSI'
+
+credentials = service_account.Credentials.from_service_account_file(
+    SERVICE_ACCOUNT_FILE, scopes=SCOPES)
+service = build('sheets', 'v4', credentials=credentials)
+
+# Number of predictions and accuracy metrics
 num_pred = 0
 
 total_tp = 0
@@ -51,21 +61,23 @@ def calculate_acc(pred, actual):
 
 def update_total_acc(acc):
     global total_acc
-    total_acc = round((num_pred * total_acc + acc) / (num_pred + 1), 2)
+    total_acc = round(((num_pred - 1) * total_acc + acc) / num_pred, 2)
 
 
 def get_acc():
     return total_acc
 
-SHEETS_READ_WRITE_SCOPE = 'https://www.googleapis.com/auth/spreadsheets'
-SCOPES = [SHEETS_READ_WRITE_SCOPE]
-SERVICE_ACCOUNT_FILE = 'credentials.json'
 
-
-def get_or_create_credentials(scopes):
-    credentials = service_account.Credentials.from_service_account_file(
-        SERVICE_ACCOUNT_FILE, scopes=SCOPES)
-    return credentials
+def upload_data(data):
+    service.spreadsheets().values().append(
+        spreadsheetId=SPREADSHEET_ID,
+        range="A1:A2",
+        body={
+            # "majorDimension": "ROWS",
+            "values": data
+        },
+        valueInputOption="USER_ENTERED"
+    ).execute()
 
 
 @app.route("/predict", methods=["POST"])
@@ -99,30 +111,15 @@ def predict():
     prediction = tfidf_model.predict(vectorized_title)
     prediction = mlb.inverse_transform(prediction)[0]
 
+    add_pred()
     if tags is None:
         add_pred()
         return jsonify({"title": title, "result": prediction})
 
-    spreadsheet_id = '1XeQkfdNCQB8L1EmwSEzgMeOSq3bXoKBh9JN337UGhSI'
-    rows = [
-        [title, str(tags)],
-    ]
-
-    credentials = get_or_create_credentials(scopes=SCOPES)  # or use GoogleCredentials.get_application_default()
-    service = build('sheets', 'v4', credentials=credentials)
-    service.spreadsheets().values().append(
-        spreadsheetId=spreadsheet_id,
-        range="A1:A2",
-        body={
-            "majorDimension": "ROWS",
-            "values": rows
-        },
-        valueInputOption="USER_ENTERED"
-    ).execute()
+    upload_data([[title, str(tags)], ])
 
     accuracy = calculate_acc(prediction, tags)
     update_total_acc(accuracy)
-    add_pred()
     return jsonify({"title": title, "result": prediction, "accuracy": accuracy})
 
 
@@ -145,4 +142,4 @@ def metrics():
 
 # Supressed a bandit B104 flag (open to non-local requests)
 if __name__ == "__main__":
-    app.run(debug=True)  # nosec B104
+    app.run(host="0.0.0.0")  # nosec B104
