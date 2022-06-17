@@ -74,10 +74,7 @@ def upload_data(data):
     service.spreadsheets().values().append(
         spreadsheetId=SPREADSHEET_ID,
         range="A1:A2",
-        body={
-            "majorDimension": "ROWS",
-            "values": data
-        },
+        body={"majorDimension": "ROWS", "values": data},
         valueInputOption="USER_ENTERED",
     ).execute()
 
