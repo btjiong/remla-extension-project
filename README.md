@@ -76,6 +76,9 @@ python so_classifier/serve.py
 3. Go to a Stack Overflow page to make a prediction.
 4. The predicted tags and accuracy will be displayed below the title.
 
+![image](https://user-images.githubusercontent.com/15816011/174408907-fab19f23-6e30-446a-9462-25f20db118c6.png)
+
+
 ## Manually sending a request
 
 1. Send a POST request to the `/predict` endpoint locally, or to `https://so-classifier.herokuapp.com/predict`
