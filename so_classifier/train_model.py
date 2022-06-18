@@ -9,6 +9,9 @@
         5) saves the model
 """
 
+from google.oauth2 import service_account
+from googleapiclient.discovery import build
+from googleapiclient.http import MediaFileUpload
 from joblib import dump
 from model.data_validation import data_validation
 from model.evaluation import get_evaluation_scores
@@ -21,6 +24,15 @@ from model.text_to_vector import bag_of_words, tfidf_features
 # '../data' and '../model/' if running this locally
 DATA_DIR = "data/"
 OUTPUT_DIR = "model/"
+
+# Set up Google Drive API
+SCOPES = ["https://www.googleapis.com/auth/drive"]
+SERVICE_ACCOUNT_FILE = "so_classifier/credentials.json"
+
+credentials = service_account.Credentials.from_service_account_file(
+    SERVICE_ACCOUNT_FILE, scopes=SCOPES
+)
+service = build("drive", "v3", credentials=credentials)
 
 
 def train_tfidf(x_train, y_train, x_val, y_val, x_test):
@@ -35,6 +47,7 @@ def train_tfidf(x_train, y_train, x_val, y_val, x_test):
         x_train, x_val, x_test
     )
     dump(tfidf_vectorizer, OUTPUT_DIR + "tfidf_vectorizer.joblib")
+    upload_model("tfidf_vectorizer.joblib", "1Ds8RLIU4lXzV-HYqoqGgKTEebfMJC_Bq")
 
     print("Training the TF-IDF classifier...")
     classifier_tfidf = train_classifier(X_train_tfidf, y_train)
@@ -48,6 +61,8 @@ def train_tfidf(x_train, y_train, x_val, y_val, x_test):
     print("Average precision: ", avp)
     print("Saving the TF-IDF model...")
     dump(classifier_tfidf, OUTPUT_DIR + "tfidf_model.joblib")
+    upload_model("tfidf_model.joblib", "1QQZBkCmu5Vf10l3uI2SAUfXMn4yG51he")
+
     print("============================================")
 
 
@@ -71,6 +86,14 @@ def train_bow(x_train, y_train, x_val, x_test, words_counts):
     print("Saving the BoW model...")
     dump(classifier_mybag, OUTPUT_DIR + "bow_model.joblib")
     print("============================================")
+
+
+def upload_model(file_name, file_id):
+    media_body = MediaFileUpload(
+        f"{OUTPUT_DIR}/{file_name}", mimetype="application/octet-stream"
+    )
+
+    service.files().update(fileId=file_id, media_body=media_body).execute()
 
 
 if __name__ == "__main__":
@@ -101,6 +124,7 @@ if __name__ == "__main__":
     # Transform labels to binary
     mlb, y_train, y_val = transform_binary(y_train, y_val, tags_counts)
     dump(mlb, OUTPUT_DIR + "mlb.joblib")
+    upload_model("mlb.joblib", "11H_g2mjDgifNNnCNWclHrhKeRyPz4Fia")
 
     # Train and save the TF-IDF model
     train_tfidf(x_train, y_train, x_val, y_val, x_test)
