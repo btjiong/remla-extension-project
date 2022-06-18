@@ -2,8 +2,8 @@ name: Train Model
 
 on:
   schedule:
-    # * is a special character in YAML so you have to quote this string
-    - cron:  '* 16 * * *'
+    # This job is scheduled to run every day at 2am UTC
+    - cron:  '* 2 * * *'
 
 
 jobs:
@@ -12,7 +12,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      #Setup python
+      # Setup python
       - name: Setup Python
         uses: actions/setup-python@v3.1.2
         with:
@@ -23,17 +23,13 @@ jobs:
           pip install -r requirements.txt
 
       
-      #Run pylint
+      # Download the latest datasets (including the online learning set), and train (and upload) the model
       - name: Train model
         run: |
           gdown --folder https://drive.google.com/drive/folders/1D5wxqjiL1OiVL7EZXLY9YvkAXqlTtj2d?usp=sharing
           gdown -O data/online.tsv https://docs.google.com/spreadsheets/d/1XeQkfdNCQB8L1EmwSEzgMeOSq3bXoKBh9JN337UGhSI/export?format=tsv
           mkdir model
           python so_classifier/train_model.py
-        
-      # Runs a single command using the runners shell
-      # - name: Run MLLINT
-      # run: docker run --rm -v ${{ github.workspace }}:/app bvobart/mllint:latest
 
 
 

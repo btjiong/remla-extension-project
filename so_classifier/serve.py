@@ -41,15 +41,24 @@ total_acc = 0
 
 
 def add_pred():
+    """
+    Updates the number of predictions counter
+    """
     global num_pred
     num_pred += 1
 
 
 def get_pred():
+    """
+    Returns the number of predictions
+    """
     return num_pred
 
 
 def calculate_acc(pred, actual):
+    """
+    Calculates the individual accuracy of a single prediction
+    """
     tp = 0
     fn = 0
     for x in actual:
@@ -62,15 +71,24 @@ def calculate_acc(pred, actual):
 
 
 def update_total_acc(acc):
+    """
+    Updates the average accuracy over all the predictions
+    """
     global total_acc
     total_acc = round(((num_pred - 1) * total_acc + acc) / num_pred, 2)
 
 
 def get_acc():
+    """
+    Returns the average accuracy
+    """
     return total_acc
 
 
 def upload_data(data):
+    """
+    Uploads the new title and tags to the online data set
+    """
     service.spreadsheets().values().append(
         spreadsheetId=SPREADSHEET_ID,
         range="A1:A2",
@@ -93,7 +111,7 @@ def predict():
           required: True
           schema:
             type: object
-            required: sms
+            required: title
             properties:
                 title:
                     type: string
@@ -102,11 +120,16 @@ def predict():
       200:
         description: "The result of the classification: tag(s)."
     """
+    # Get the title and tags (if given) from the request
     input_data = request.get_json()
     title = input_data.get("title")
     tags = input_data.get("tags")
+
+    # Apply preprocessing and vectorization to the title
     prepared_title = text_prepare(title)
     vectorized_title = tfidf_vectorizer.transform([prepared_title])
+
+    # Make a prediction and retrieve the tags
     prediction = tfidf_model.predict(vectorized_title)
     prediction = mlb.inverse_transform(prediction)[0]
 
@@ -115,12 +138,14 @@ def predict():
         add_pred()
         return jsonify({"title": title, "result": prediction})
 
+    # If tags are given, update the online data set
     upload_data(
         [
             [title, str(tags)],
         ]
     )
 
+    # Calculate the accuracy and update the average accuracy
     accuracy = calculate_acc(prediction, tags)
     update_total_acc(accuracy)
     return jsonify({"title": title, "result": prediction, "accuracy": accuracy})

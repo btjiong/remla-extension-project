@@ -3,18 +3,26 @@ import pandas as pd
 
 
 def load_data(p):
+    """
+    Loads the data from a directory as a DataFrame
+    """
     df = pd.read_csv(p, sep="\t")
     return df
 
 
-# saving the validated dataframe as .tsv
 def save_data(p, df):
+    """
+    Saves the data as a .tsv file in a directory
+    """
     print("Now saving")
     df.to_csv(p, index=False, sep="\t")
     print("saved checked .tsv test file\n")
 
 
 def split_data(df):
+    """
+    Shuffles and splits (67/20/13) the given DataFrame
+    """
     # Shuffles the data
     df = df.sample(frac=1, random_state=1)
 
@@ -24,6 +32,9 @@ def split_data(df):
 
 
 def concat_data(df1, df2):
+    """
+    Concatenates two DataFrames and resets the index
+    """
     # Concat the two datasets
     df = pd.concat([df1, df2])
 
