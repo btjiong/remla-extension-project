@@ -19,6 +19,7 @@ from model.load_data import concat_data, load_data, split_data
 from model.multilabel_classifier import train_classifier, transform_binary
 from model.text_preprocessing import process_data
 from model.text_to_vector import bag_of_words, tfidf_features
+import os
 
 # 'data/' and 'model/' if running in docker
 # '../data' and '../model/' if running this locally
@@ -46,8 +47,9 @@ def train_tfidf(x_train, y_train, x_val, y_val, x_test):
     X_train_tfidf, X_val_tfidf, X_test_tfidf, tfidf_vectorizer = tfidf_features(
         x_train, x_val, x_test
     )
-    dump(tfidf_vectorizer, OUTPUT_DIR + "tfidf_vectorizer.joblib")
-    upload_model("tfidf_vectorizer.joblib", "1Ds8RLIU4lXzV-HYqoqGgKTEebfMJC_Bq")
+    print(f"{os.getcwd()}/{OUTPUT_DIR}")
+    # dump(tfidf_vectorizer, OUTPUT_DIR + "tfidf_vectorizer.joblib")
+    # upload_model("tfidf_vectorizer.joblib", "1Ds8RLIU4lXzV-HYqoqGgKTEebfMJC_Bq")
 
     print("Training the TF-IDF classifier...")
     classifier_tfidf = train_classifier(X_train_tfidf, y_train)
@@ -60,8 +62,8 @@ def train_tfidf(x_train, y_train, x_val, y_val, x_test):
     print("F1-Score: ", f1)
     print("Average precision: ", avp)
     print("Saving the TF-IDF model...")
-    dump(classifier_tfidf, OUTPUT_DIR + "tfidf_model.joblib")
-    upload_model("tfidf_model.joblib", "1QQZBkCmu5Vf10l3uI2SAUfXMn4yG51he")
+    # dump(classifier_tfidf, OUTPUT_DIR + "tfidf_model.joblib")
+    # upload_model("tfidf_model.joblib", "1QQZBkCmu5Vf10l3uI2SAUfXMn4yG51he")
 
     print("============================================")
 
@@ -125,6 +127,7 @@ if __name__ == "__main__":
     mlb, y_train, y_val = transform_binary(y_train, y_val, tags_counts)
     dump(mlb, OUTPUT_DIR + "mlb.joblib")
     upload_model("mlb.joblib", "11H_g2mjDgifNNnCNWclHrhKeRyPz4Fia")
+    print("mlb savedSS")
 
     # Train and save the TF-IDF model
     train_tfidf(x_train, y_train, x_val, y_val, x_test)
