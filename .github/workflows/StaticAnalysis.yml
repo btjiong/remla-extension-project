@@ -48,7 +48,7 @@ jobs:
       - name: GitHub Action for pylint
         run: pylint --fail-under=8 $(git ls-files '*.py')
       
-      #Publish the bandit output as an artifact
+      #Publish the bandit model as an artifact
       - uses: actions/upload-artifact@v3
         if: always()
         with:

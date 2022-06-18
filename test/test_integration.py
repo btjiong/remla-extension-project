@@ -19,9 +19,9 @@ class TestTextPrepare(unittest.TestCase):
         General test to see if the model  ignores noise.
         """
 
-        tfidf_model = joblib.load("output/tfidf_model.joblib")
-        tfidf_vectorizer = joblib.load("output/tfidf_vectorizer.joblib")
-        mlb = joblib.load("output/mlb.joblib")
+        tfidf_model = joblib.load("model/tfidf_model.joblib")
+        tfidf_vectorizer = joblib.load("model/tfidf_vectorizer.joblib")
+        mlb = joblib.load("model/mlb.joblib")
 
         title = "Python Script execute commands in Terminal"
         prepared_title = text_prepare(title)
