@@ -17,10 +17,10 @@ from model.multilabel_classifier import train_classifier, transform_binary
 from model.text_preprocessing import process_data
 from model.text_to_vector import bag_of_words, tfidf_features
 
-# 'data/' and 'output/' if running in docker
-# '../data' and '../output/' if running this locally
+# 'data/' and 'model/' if running in docker
+# '../data' and '../model/' if running this locally
 DATA_DIR = "data/"
-OUTPUT_DIR = "output/"
+OUTPUT_DIR = "model/"
 
 
 def train_tfidf(x_train, y_train, x_val, y_val, x_test):

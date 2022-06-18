@@ -17,9 +17,9 @@ app = Flask(__name__)
 swagger = Swagger(app)
 
 # Load model
-tfidf_model = joblib.load("output/tfidf_model.joblib")
-tfidf_vectorizer = joblib.load("output/tfidf_vectorizer.joblib")
-mlb = joblib.load("output/mlb.joblib")
+tfidf_model = joblib.load("model/tfidf_model.joblib")
+tfidf_vectorizer = joblib.load("model/tfidf_vectorizer.joblib")
+mlb = joblib.load("model/mlb.joblib")
 
 # Set up Google Drive API
 SCOPES = ["https://www.googleapis.com/auth/drive"]

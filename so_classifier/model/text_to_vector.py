@@ -131,7 +131,7 @@ def tfidf_transform(dataset):
 
     return: TF-IDF vectorized representation of each sample and vocabulary
     """
-    tfidf_vectorizer = joblib.load("../../output/tfidf_vectorizer.joblib")
+    tfidf_vectorizer = joblib.load("../../model/tfidf_vectorizer.joblib")
 
     dataset_tfidf = tfidf_vectorizer.transform(dataset)
 
