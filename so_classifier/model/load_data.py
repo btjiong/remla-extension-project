@@ -1,8 +1,5 @@
 import numpy as np
 import pandas as pd
-from google.oauth2 import service_account
-from googleapiclient.discovery import build
-from googleapiclient.http import MediaFileUpload
 
 
 def load_data(p):
@@ -36,27 +33,3 @@ def concat_data(df1, df2):
     print(f"Concatenated file: {df.shape}")
 
     return df
-
-
-# Set up Google Drive API
-SCOPES = ["https://www.googleapis.com/auth/drive"]
-SERVICE_ACCOUNT_FILE = "so_classifier/credentials.json"
-
-credentials = service_account.Credentials.from_service_account_file(
-    SERVICE_ACCOUNT_FILE, scopes=SCOPES
-)
-service = build("drive", "v3", credentials=credentials)
-
-file_id = "1Ds8RLIU4lXzV-HYqoqGgKTEebfMJC_Bq"
-
-file_metadata = {
-    "name": "tfidf_vectorizer.joblib",
-    "parents": ["1InFeBLhOU-Y2Sj8mjE-2IKFs9H5rby3K"]
-}
-
-media_body = MediaFileUpload("model/tfidf_vectorizer.joblib", mimetype="application/octet-stream")
-
-service.files().update(
-    fileId=file_id,
-    media_body=media_body
-).execute()
