@@ -6,7 +6,7 @@
         2) generates the TF-IDF and/or BoW vectors
         3) trains the TF-IDF and/or BoW model
         4) evaluates the model
-        5) saves the model
+        5) saves the model/uploads the model
 """
 
 from google.oauth2 import service_account
@@ -46,6 +46,8 @@ def train_tfidf(x_train, y_train, x_val, y_val, x_test):
     X_train_tfidf, X_val_tfidf, X_test_tfidf, tfidf_vectorizer = tfidf_features(
         x_train, x_val, x_test
     )
+
+    # Saves and uploads the vectorizer
     dump(tfidf_vectorizer, OUTPUT_DIR + "tfidf_vectorizer.joblib")
     upload_model("tfidf_vectorizer.joblib", "1Ds8RLIU4lXzV-HYqoqGgKTEebfMJC_Bq")
 
@@ -60,6 +62,8 @@ def train_tfidf(x_train, y_train, x_val, y_val, x_test):
     print("F1-Score: ", f1)
     print("Average precision: ", avp)
     print("Saving the TF-IDF model...")
+
+    # Saves and uploads the model
     dump(classifier_tfidf, OUTPUT_DIR + "tfidf_model.joblib")
     upload_model("tfidf_model.joblib", "1QQZBkCmu5Vf10l3uI2SAUfXMn4yG51he")
 
@@ -89,6 +93,9 @@ def train_bow(x_train, y_train, x_val, x_test, words_counts):
 
 
 def upload_model(file_name, file_id):
+    """
+    Uploads the model
+    """
     media_body = MediaFileUpload(
         f"{OUTPUT_DIR}/{file_name}", mimetype="application/octet-stream"
     )
@@ -123,6 +130,8 @@ if __name__ == "__main__":
 
     # Transform labels to binary
     mlb, y_train, y_val = transform_binary(y_train, y_val, tags_counts)
+
+    # Saves and uploads the model
     dump(mlb, OUTPUT_DIR + "mlb.joblib")
     upload_model("mlb.joblib", "11H_g2mjDgifNNnCNWclHrhKeRyPz4Fia")
 

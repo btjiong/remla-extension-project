@@ -1,8 +1,10 @@
 from ast import literal_eval
 
 
-# loading the dataframe from load_data.py and checking the amount of columns
 def column_check(data, cols):
+    """
+    Loads the DataFrame and checks the amount of columns
+    """
     print("Amount of columns detected: ", cols)
     if (int(cols)) == 2:
         titles = data["title"]
@@ -20,8 +22,10 @@ def column_check(data, cols):
             # TODO Throw exception
 
 
-# checking the titles
 def check_title(data):
+    """
+    Checks if the titles in the DataFrame are in the correct format
+    """
     print("Checking titles")
     titles = data["title"].values
     for i in range(len(titles)):
@@ -42,8 +46,10 @@ def check_title(data):
     return data
 
 
-# checking the tags
 def check_tags(data):
+    """
+    Checks if the tags in the DataFrame are in the correct format
+    """
     print("Checking tags")
     corpus = data["tags"].values
     for i in range(len(corpus)):
@@ -73,8 +79,10 @@ def check_tags(data):
     return data
 
 
-# running the functions in order to validate the data
 def data_validation(data):
+    """
+    Validates the consistency and format of the data
+    """
     print("--- DATA VALIDATION STARTED ---")
     cols = int(data.shape[1])
     if int(cols) == 2:
