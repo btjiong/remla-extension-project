@@ -3,7 +3,7 @@ name: Train Model
 on:
   schedule:
     # * is a special character in YAML so you have to quote this string
-    - cron:  '46 15 * * *'
+    - cron:  '* 16 * * *'
 
 
 jobs:
