@@ -6,7 +6,7 @@ import unittest
 
 import joblib
 
-from so_classifier.text_preprocessing import text_prepare
+from so_classifier.model.text_preprocessing import text_prepare
 
 
 class TestTextPrepare(unittest.TestCase):

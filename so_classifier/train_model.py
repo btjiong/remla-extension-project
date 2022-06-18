@@ -9,13 +9,13 @@
         5) saves the model
 """
 
-from data_validation import data_validation
-from evaluation import get_evaluation_scores
 from joblib import dump
-from load_data import concat_data, load_data, save_data, split_data
-from multilabel_classifier import train_classifier, transform_binary
-from text_preprocessing import process_data
-from text_to_vector import bag_of_words, tfidf_features
+from model.data_validation import data_validation
+from model.evaluation import get_evaluation_scores
+from model.load_data import concat_data, load_data, split_data
+from model.multilabel_classifier import train_classifier, transform_binary
+from model.text_preprocessing import process_data
+from model.text_to_vector import bag_of_words, tfidf_features
 
 # 'data/' and 'output/' if running in docker
 # '../data' and '../output/' if running this locally

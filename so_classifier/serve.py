@@ -11,7 +11,7 @@ from flask import Flask, jsonify, make_response, request
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
 
-from so_classifier.text_preprocessing import text_prepare
+from so_classifier.model.text_preprocessing import text_prepare
 
 app = Flask(__name__)
 swagger = Swagger(app)
